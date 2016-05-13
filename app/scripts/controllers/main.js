@@ -1,17 +1,14 @@
 'use strict';
 
-/**
- * @ngdoc function
- * @name backtesterclientApp.controller:MainCtrl
- * @description
- * # MainCtrl
- * Controller of the backtesterclientApp
- */
 angular.module('backtesterclientApp')
-  .controller('MainCtrl', function () {
-    this.awesomeThings = [
-      'HTML5 Boilerplate',
-      'AngularJS',
-      'Karma'
-    ];
-  });
+.controller('MainCtrl', ['BacktesterWorkersService', function (BacktesterWorkersService) {
+
+    var self = this;
+
+    self.workers = BacktesterWorkersService.workers();
+
+    self.showWorkerStatusDetails = function (name) {
+        BacktesterWorkersService.showStatusDetails(name);
+    };
+
+}]);

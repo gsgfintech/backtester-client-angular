@@ -1,0 +1,11 @@
+<div class="row">
+    <div class="col-lg-12">
+        <form name="newPhotosForm" role="form" enctype="multipart/form-data" ng-disabled="jobsCtrl.uploading" ng-submit="jobsCtrl.upload()">
+            <div class="form-group">
+                <label for="newPhotos">select and upload new photos</label>
+                <input type="file" id="newPhotos" class="uploadFile" accept="*" ng-model="jobsCtrl.fileToUpload">
+            </div>
+            <button type="submit" class="btn btn-primary">Upload</button>
+        </form>
+    </div>
+</div>
