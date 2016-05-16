@@ -11,4 +11,8 @@ angular.module('backtesterclientApp')
         BacktesterWorkersService.showStatusDetails(name);
     };
 
+    self.getAttributeValue = function (workerName, attributeName) {
+        return BacktesterWorkersService.getAttributeValue(workerName, attributeName);
+    };
+
 }]);

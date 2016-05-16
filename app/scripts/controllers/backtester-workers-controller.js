@@ -40,4 +40,8 @@ angular.module('backtesterclientApp')
         BacktesterWorkersService.workerRejectJobs(name);
     };
 
+    self.getAttributeValue = function (workerName, attributeName) {
+        return BacktesterWorkersService.getAttributeValue(workerName, attributeName);
+    };
+
 }]);

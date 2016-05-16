@@ -1,12 +1,12 @@
 'use strict';
 
 angular.module('backtesterclientApp')
-.factory('BacktesterClientHubService', ['$rootScope', 'Hub', 'PopupService', 'serverEnpoint', function ($rootScope, Hub, PopupService, serverEnpoint) {
+.factory('BacktesterClientHubService', ['$rootScope', 'Hub', 'PopupService', 'serverEndpoint', function ($rootScope, Hub, PopupService, serverEndpoint) {
 
     var ready = false;
 
     var hub = new Hub('controllerAppHub', {
-        rootPath: serverEnpoint + '/signalr',
+        rootPath: serverEndpoint + '/signalr',
         listeners: {
 
             // Alerts

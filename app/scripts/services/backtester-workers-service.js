@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('backtesterclientApp')
-.factory('BacktesterWorkersActionService', ['$resource', 'serverEnpoint', function ($resource, serverEndpoint) {
+.factory('BacktesterWorkersActionService', ['$resource', 'serverEndpoint', function ($resource, serverEndpoint) {
     var address = serverEndpoint + 'api/workers/:name/:action';
 
     return $resource(address, {
@@ -278,6 +278,35 @@ angular.module('backtesterclientApp')
         return -1;
     }
 
+    function findAttributeIndex(worker, attributeName) {
+        if (worker.status && worker.status.Attributes && worker.status.Attributes.length > 0) {
+            for (var i = 0; i < worker.status.Attributes.length; i++) {
+                if (worker.status.Attributes[i].Name === attributeName) {
+                    return i;
+                }
+            }
+        }
+
+        return -1;
+    }
+
+    function getAttributeValue(workerName, attributeName) {
+        var workerIndex = findWorkerIndexByName(workerName);
+
+        if (workerIndex > -1) {
+            var attributeIndex = findAttributeIndex(workers[workerIndex], attributeName);
+
+            if (attributeIndex > -1) {
+                return workers[workerIndex].status.Attributes[attributeIndex].Value;
+            } else {
+                return null;
+            }
+        } else {
+            console.error('Unknown worker', workerName);
+            return null;
+        }
+    }
+
     loadBacktesterWorkers();
 
     // Event listeners
@@ -300,6 +329,7 @@ angular.module('backtesterclientApp')
         addWorkerConfig: addWorkerConfig,
         deleteWorkerConfig: deleteWorkerConfig,
         editWorkerConfig: editWorkerConfig,
+        getAttributeValue: getAttributeValue,
         showStatusDetails: showStatusDetails,
         startWorker: startWorker,
         stopWorker: stopWorker,
