@@ -1,165 +1,51 @@
-<uib-accordion close-others="false">
-    <uib-accordion-group ng-repeat="worker in backtesterWorkersCtrl.workers | orderBy:'Name' track by worker.name" is-open="$first">
-        <uib-accordion-heading>
-            <h4>{{worker.name}}</h4>
-        </uib-accordion-heading>
-        <div class="panel-body">
-            <div class="row">
-                <div class="btn-group">
-                    <button class="btn btn-success" ng-click="backtesterWorkersCtrl.start(worker.name)" ng-disabled="worker.status.IsAlive">Start</button>
-                    <button class="btn btn-danger" ng-click="backtesterWorkersCtrl.stop(worker.name)" ng-disabled="!worker.status.IsAlive">Stop</button>
-                </div>
-                <div class="btn-group">
-                    <button class="btn btn-success" ng-click="backtesterWorkersCtrl.startJob(worker.name)" ng-disabled="backtesterWorkersCtrl.getAttributeValue(worker.name, 'AcceptsJobs')">Accept New Jobs</button>
-                    <button class="btn btn-danger" ng-click="backtesterWorkersCtrl.stopJob(worker.name)" ng-disabled="!backtesterWorkersCtrl.getAttributeValue(worker.name, 'AcceptsJobs')">Reject New Jobs</button>
-                </div>
-                <div class="btn-group btn-group-xs">
-                    <button class="btn btn-default" ng-click="backtesterWorkersCtrl.edit(worker.config)">Edit Config</button>
-                    <button class="btn btn-danger" ng-click="backtesterWorkersCtrl.delete(worker.config)">Delete Config</button>
-                </div>
+<div class="row">
+    <div class="col-xs-12">
+        <div class="panel panel-default">
+            <div class="panel-title">
+                <h4>Backtest Workers</h4>
             </div>
-            <div class="row">
-                <h3>Database Settings</h3>
-            </div>
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <h4 class="panel-title">Backtest Database</h4>
-                        </div>
-                        <div class="panel-body">
-                            <div class="row">
-                                <div class="col-sm-2">
-                                    <label>Name</label>
-                                </div>
-                                <div class="col-sm-4 text-overflow">
-                                    {{worker.config.BacktestDBName}}
-                                </div>
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <tr>
+                        <th></th>
+                        <th>Accepting New Jobs</th>
+                        <th>Current Job</th>
+                        <th>Jobs Queue</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                    <tr ng-repeat="worker in backtesterWorkersCtrl.workers | orderBy:'Name'">
+                        <th><a href ng-click="backtesterWorkersCtrl.showWorkerDetails(worker.Name)">{{worker.Name}}</a></th>
+                        <td ng-class="[{'bg-success': worker.IsAcceptingJobs}, {'bg-danger': !worker.IsAcceptingJobs}]">
+                            <div class="btn-group btn-group-xs">
+                                <button class="btn btn-success" ng-disabled="worker.IsAcceptingJobs" ng-click="backtesterWorkersCtrl.workerAcceptJobs(worker.Name)">Yes</button>
+                                <button class="btn btn-danger" ng-disabled="!worker.IsAcceptingJobs" ng-click="backtesterWorkersCtrl.workerRejectJobs(worker.Name)">No</button>
                             </div>
-                            <div class="row">
-                                <div class="col-sm-2">
-                                    <label>Host 1</label>
-                                </div>
-                                <div class="col-sm-4 text-overflow">
-                                    {{worker.config.BacktestDBHost1}}
-                                </div>
-                                <div class="col-sm-2">
-                                    <label>Port 1</label>
-                                </div>
-                                <div class="col-sm-4">
-                                    {{worker.config.BacktestDBPort1}}
-                                </div>
+                        </td>
+                        <td><a href ng-click="backtesterWorkersCtrl.showJobDetails(worker.CurrentJob)">{{worker.CurrentJob}}</a></td>
+                        <td>{{worker.Jobs.length}}</td>
+                        <td ng-class="[{'bg-success': worker.status.IsAlive}, {'bg-danger': !worker.status.IsAlive}]">
+                            <div class="btn-group btn-group-xs">
+                                <button class="btn btn-success" ng-disabled="worker.status.IsAlive" ng-click="backtesterWorkersCtrl.start(worker.Name)">Start</button>
+                                <button class="btn btn-danger" ng-disabled="!worker.status.IsAlive" ng-click="backtesterWorkersCtrl.stop(worker.Name)">Stop</button>
                             </div>
-                            <div class="row">
-                                <div class="col-sm-2">
-                                    <label>Host 2</label>
-                                </div>
-                                <div class="col-sm-4 text-overflow">
-                                    {{worker.config.BacktestDBHost2}}
-                                </div>
-                                <div class="col-sm-2">
-                                    <label>Port 2</label>
-                                </div>
-                                <div class="col-sm-4">
-                                    {{worker.config.BacktestDBPort2}}
-                                </div>
+                        </td>
+                        <td>
+                            <div class="btn-group btn-group-xs">
+                                <button class="btn btn-default btn-xs" ng-click="backtesterWorkersCtrl.edit(worker.Name)">Edit Config</button>
+                                <button class="btn btn-danger btn-xs" ng-click="backtesterWorkersCtrl.delete(worker.Name)">Delete Worker</button>
                             </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <h4 class="panel-title">Market Data Database</h4>
-                        </div>
-                        <div class="panel-body">
-                            <div class="row">
-                                <div class="col-sm-2">
-                                    <label>Name</label>
-                                </div>
-                                <div class="col-sm-4 text-overflow">
-                                    {{worker.config.MarketDataDBName}}
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-sm-2">
-                                    <label>Host 1</label>
-                                </div>
-                                <div class="col-sm-4 text-overflow">
-                                    {{worker.config.MarketDataDBHost1}}
-                                </div>
-                                <div class="col-sm-2">
-                                    <label>Port 1</label>
-                                </div>
-                                <div class="col-sm-4">
-                                    {{worker.config.MarketDataDBPort1}}
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-sm-2">
-                                    <label>Host 2</label>
-                                </div>
-                                <div class="col-sm-4 text-overflow">
-                                    {{worker.config.MarketDataDBHost2}}
-                                </div>
-                                <div class="col-sm-2">
-                                    <label>Port 2</label>
-                                </div>
-                                <div class="col-sm-4">
-                                    {{worker.config.MarketDataDBPort2}}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <h3>Other Settings</h3>
-            </div>
-            <div class="row">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h4 class="panel-title">Controller</h4>
-                    </div>
-                    <div class="panel-body">
-                        <div class="row">
-                            <div class="col-sm-2">
-                                <label>Controller</label>
-                            </div>
-                            <div class="col-sm-4">
-                                {{worker.config.ControllerEndpoint}}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h4 class="panel-title">Monitoring</h4>
-                    </div>
-                    <div class="panel-body">
-                        <div class="row">
-                            <div class="col-sm-2">
-                                <label>Monitoring</label>
-                            </div>
-                            <div class="col-sm-4">
-                                {{worker.config.MonitoringEndpoint}}
-                            </div>
-                            <div class="col-sm-2">
-                                <label>Slack Webhook</label>
-                            </div>
-                            <div class="col-sm-4 text-overflow">
-                                {{worker.config.SlackWebHook}}
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="6">
+                            <button class="btn btn-success" ng-click="backtesterWorkersCtrl.add()">
+                                <span class="glyphicon glyphicon-plus-sign"></span> Add New
+                            </button>
+                        </td>
+                    </tr>
+                </table>
             </div>
         </div>
-    </uib-accordion-group>
-</uib-accordion>
-
-<div class="row">
-    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-        <button class="btn btn-success" ng-click="backtesterWorkersCtrl.add()"><span class="glyphicon glyphicon-plus-sign"></span> Add New</button>
     </div>
 </div>

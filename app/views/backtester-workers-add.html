@@ -3,113 +3,18 @@
         <h3>New Backtester Worker</h3>
     </div>
     <div class="modal-body">
-        <form class="form-horizontal">
+        <form class="form-horizontal" name="formAddWorker">
             <div class="form-group">
                 <label for="name" class="col-sm-2 control-label">Name</label>
                 <div class="col-sm-10">
-                    <input type="text" id="name" class="form-control" ng-model="backtesterWorkersAddCtrl.name" required />
+                    <input type="text" id="name" class="form-control" ng-model="backtesterWorkersAddCtrl.worker.Name" required />
                 </div>
             </div>
-            <uib-accordion close-others="false">
-                <uib-accordion-group heading="Backtest Database">
-                    <div class="panel-body">
-                        <div class="form-group">
-                            <label for="backtest-db-name" class="col-sm-2">Name</label>
-                            <div class="col-sm-10">
-                                <input class="form-control" id="backtest-db-name" type="text" ng-model="backtesterWorkersAddCtrl.backtestDBName" />
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="backtest-db-host1" class="col-sm-2">Host 1</label>
-                            <div class="col-sm-10">
-                                <input id="backtest-db-host1" class="form-control" type="text" ng-model="backtesterWorkersAddCtrl.backtestDBHost1" />
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="backtest-db-port1" class="col-sm-2">Port 1</label>
-                            <div class="col-sm-10">
-                                <input id="backtest-db-port1" class="form-control" type="number" ng-model="backtesterWorkersAddCtrl.backtestDBPort1" />
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="backtest-db-host2" class="col-sm-2">Host 2</label>
-                            <div class="col-sm-10">
-                                <input id="backtest-db-host2" class="form-control" type="text" ng-model="backtesterWorkersAddCtrl.backtestDBHost2" />
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="backtest-db-port2" class="col-sm-2">Port 2</label>
-                            <div class="col-sm-10">
-                                <input id="backtest-db-port2" class="form-control" type="number" ng-model="backtesterWorkersAddCtrl.backtestDBPort2" />
-                            </div>
-                        </div>
-                    </div>
-                </uib-accordion-group>
-                <uib-accordion-group heading="Market Data Database">
-                    <div class="panel-body">
-                        <div class="form-group">
-                            <label for="md-db-name" class="col-sm-2">Name</label>
-                            <div class="col-sm-10">
-                                <input class="form-control" id="md-db-name" type="text" ng-model="backtesterWorkersAddCtrl.marketDataDBName" />
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="md-db-host1" class="col-sm-2">Host 1</label>
-                            <div class="col-sm-10">
-                                <input id="md-db-host1" class="form-control" type="text" ng-model="backtesterWorkersAddCtrl.marketDataDBHost1" />
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="md-db-port1" class="col-sm-2">Port 1</label>
-                            <div class="col-sm-10">
-                                <input id="md-db-port1" class="form-control" type="number" ng-model="backtesterWorkersAddCtrl.marketDataDBPort1" />
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="md-db-host2" class="col-sm-2">Host 2</label>
-                            <div class="col-sm-10">
-                                <input id="md-db-host2" class="form-control" type="text" ng-model="backtesterWorkersAddCtrl.marketDataDBHost2" />
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="md-db-port2" class="col-sm-2">Port 2</label>
-                            <div class="col-sm-10">
-                                <input id="md-db-port2" class="form-control" type="number" ng-model="backtesterWorkersAddCtrl.marketDataDBPort2" />
-                            </div>
-                        </div>
-                    </div>
-                </uib-accordion-group>
-                <uib-accordion-group heading="Controller">
-                    <div class="panel-body">
-                        <div class="form-group">
-                            <label for="controller-endpoint" class="col-sm-2">Controller Endpoint</label>
-                            <div class="col-sm-10">
-                                <input id="controller-endpoint" class="form-control" type="text" ng-model="backtesterWorkersAddCtrl.controllerEndpoint" />
-                            </div>
-                        </div>
-                    </div>
-                </uib-accordion-group>
-                <uib-accordion-group heading="Monitoring">
-                    <div class="panel-body">
-                        <div class="form-group">
-                            <label for="monitoring-endpoint" class="col-sm-2">Monitoring Endpoint</label>
-                            <div class="col-sm-10">
-                                <input id="monitoring-endpoint" class="form-control" type="text" ng-model="backtesterWorkersAddCtrl.monitoringEndpoint" />
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="slack-webhook" class="col-sm-2">Slack Webhook</label>
-                            <div class="col-sm-10">
-                                <input id="slack-webhook" class="form-control" type="text" ng-model="backtesterWorkersAddCtrl.slackWebHook" />
-                            </div>
-                        </div>
-                    </div>
-                </uib-accordion-group>
-            </uib-accordion>
+            <worker-config-edit worker="backtesterWorkersAddCtrl.worker"></worker-config-edit>
         </form>
     </div>
     <div class="modal-footer">
-        <button class="btn btn-primary" ng-click="backtesterWorkersAddCtrl.submit()">Add</button>
+        <button class="btn btn-primary" ng-click="backtesterWorkersAddCtrl.submit()" ng-disabled="formAddWorker.$invalid">Add</button>
         <button class="btn btn-default" ng-click="backtesterWorkersAddCtrl.cancel()">Cancel</button>
     </div>
 </div>

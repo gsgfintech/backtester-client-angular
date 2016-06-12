@@ -65,6 +65,13 @@ angular.module('backtesterclientApp')
                 //console.log('Received status update for', status.Name);
 
                 $rootScope.$broadcast('workerStatusUpdateReceivedEvent', status);
+            },
+
+            // Workers
+            'workerUpdateReceived': function (worker) {
+                console.log('Received worker update for', worker.Name);
+
+                $rootScope.$broadcast('workerUpdateReceivedEvent', worker);
             }
         },
 

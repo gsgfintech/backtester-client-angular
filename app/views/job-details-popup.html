@@ -1,0 +1,14 @@
+<div>
+    <div class="modal-header">
+        <h4 class="modal-title pull-left">Backtest Job</h4>
+        <div class="btn-group btn-group-sm pull-right">
+            <a class="btn btn-primary" href="{{jobDetailsCtrl.detailsLink}}" target="_blank"><span class="glyphicon glyphicon-share"></span> Open</a>
+        </div>
+    </div>
+    <div class="modal-body">
+        <job-details job="jobDetailsCtrl.job"></job-details>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-default" ng-click="jobDetailsCtrl.close()">Close</button>
+    </div>
+</div>

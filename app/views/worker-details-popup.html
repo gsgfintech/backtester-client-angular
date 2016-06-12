@@ -1,0 +1,14 @@
+<div>
+    <div class="modal-header">
+        <h4 class="modal-title pull-left">Backtester Worker</h4>
+        <div class="btn-group btn-group-sm pull-right">
+            <a class="btn btn-primary" href="{{workerDetailsCtrl.detailsLink}}" target="_blank"><span class="glyphicon glyphicon-share"></span> Open</a>
+        </div>
+    </div>
+    <div class="modal-body">
+        <worker-details worker="workerDetailsCtrl.worker"></worker-details>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-default" ng-click="workerDetailsCtrl.close()">Close</button>
+    </div>
+</div>

@@ -1,0 +1,88 @@
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h4>Worker {{backtestWorker.Name}} - Status</h4>
+    </div>
+    <div class="table-responsive">
+        <table class="table">
+            <tr>
+                <th>Last HB</th>
+                <td>{{backtestWorker.status.LastHeardFrom | date:'dd/MM/yy HH:mm:ss Z'}}</td>
+            </tr>
+            <tr>
+                <th>Start Time</th>
+                <td>{{backtestWorker.status.StartTime | date:'dd/MM/dd HH:mm:ss Z'}}</td>
+            </tr>
+            <tr>
+                <th>Is Running</th>
+                <td>
+                    <div class="label label-success" ng-show="backtestWorker.IsRunning === true"><span class="glyphicon glyphicon-ok-sign"></span></div>
+                    <div class="label label-danger" ng-show="backtestWorker.IsRunning === false"><span class="glyphicon glyphicon-remove-sign"></span></div>
+                </td>
+            </tr>
+            <tr>
+                <th>Is Accepting Jobs</th>
+                <td>
+                    <div class="label label-success" ng-show="backtestWorker.IsAcceptingJobs === true"><span class="glyphicon glyphicon-ok-sign"></span></div>
+                    <div class="label label-danger" ng-show="backtestWorker.IsAcceptingJobs === false"><span class="glyphicon glyphicon-remove-sign"></span></div>
+                </td>
+            </tr>
+            <tr>
+                <th>Current Job</th>
+                <td>{{backtestWorker.CurrentJob}}</td>
+            </tr>
+            <tr ng-repeat="attribute in backtestWorker.status.Attributes | orderBy:'Name'">
+                <th>{{attribute.Name}}</th>
+                <td ng-class="[{'bg-success': attribute.Level == 'GREEN'}, {'bg-warning': attribute.Level == 'YELLOW'}, {'bg-danger': attribute.Level == 'RED'}]">{{attribute.Value}}</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h4>Jobs <span class="badge">{{backtestWorker.Jobs.length}}</span></h4>
+    </div>
+    <div class="table-responsive">
+        <table class="table">
+            <tr ng-repeat="job in backtestWorker.Jobs | orderBy:'Name'">
+                <td>{{job}}</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h4>Config</h4>
+    </div>
+    <div class="table-responsive">
+        <table class="table">
+            <tr>
+                <th>MD DB Name</th>
+                <td>{{backtestWorker.Config.MarketDataDBName}}</td>
+            </tr>
+            <tr>
+                <th>MD DB Host 1</th>
+                <td>{{backtestWorker.Config.MarketDataDBHost1}}:{{backtestWorker.Config.MarketDataDBPort1}}</td>
+            </tr>
+            <tr>
+                <th>MD DB Host 2</th>
+                <td>
+                    <div ng-hide="!backtestWorker.Config.MarketDataDBHost2">
+                        {{backtestWorker.Config.MarketDataDBHost2}}:{{backtestWorker.Config.MarketDataDBPort2}}
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <th>Controller Endpoint</th>
+                <td>{{backtestWorker.Config.ControllerEndpoint}}</td>
+            </tr>
+            <tr>
+                <th>Monitoring Endpoint</th>
+                <td>{{backtestWorker.Config.MonitoringEndpoint}}</td>
+            </tr>
+            <tr>
+                <th>Slack Webhook</th>
+                <td>{{backtestWorker.Config.SlackWebhook}}</td>
+            </tr>
+        </table>
+    </div>
+</div>

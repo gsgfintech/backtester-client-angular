@@ -10,6 +10,7 @@
     <!-- bower:css -->
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
     <link rel="stylesheet" href="bower_components/AngularJS-Toaster/toaster.css" />
+    <link rel="stylesheet" href="bower_components/angular-ui-switch/angular-ui-switch.css" />
     <!-- endbower -->
     <!-- endbuild -->
     <!-- build:css(.tmp) styles/main.css -->
@@ -72,6 +73,7 @@
     <script src="bower_components/signalr/jquery.signalR.js"></script>
     <script src="bower_components/angular-signalr-hub/signalr-hub.js"></script>
     <script src="bower_components/ng-file-upload/ng-file-upload.js"></script>
+    <script src="bower_components/angular-ui-switch/angular-ui-switch.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
     <!-- build:js({.tmp,app}) scripts/scripts.js -->
@@ -81,14 +83,20 @@
     <script src="scripts/services/backtester-workers-service.js"></script>
     <script src="scripts/controllers/backtester-workers-add-controller.js"></script>
     <script src="scripts/services/popup-service.js"></script>
-    <script src="scripts/controllers/backtester-workers-delete-controller.js"></script>
     <script src="scripts/controllers/action-confirm-popup-controller.js"></script>
     <script src="scripts/services/systems-service.js"></script>
     <script src="scripts/controllers/backtester-workers-edit-controller.js"></script>
     <script src="scripts/controllers/jobs-controller.js"></script>
+    <script src="scripts/controllers/jobs-create-controller.js"></script>
     <script src="scripts/services/jobs-service.js"></script>
     <script src="scripts/services/backtester-client-hub-service.js"></script>
     <script src="scripts/controllers/system-status-details-controller.js"></script>
+    <script src="scripts/controllers/job-details-controller.js"></script>
+    <script src="scripts/directives/job-details-directive.js"></script>
+    <script src="scripts/directives/worker-details-directive.js"></script>
+    <script src="scripts/controllers/backtester-worker-details-controller.js"></script>
+    <script src="scripts/services/commons-service.js"></script>
+    <script src="scripts/directives/worker-config-edit-directive.js"></script>
     <!-- endbuild -->
 </body>
 </html>

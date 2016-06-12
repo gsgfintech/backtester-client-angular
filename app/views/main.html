@@ -12,12 +12,12 @@
                 </tr>
                 <tr ng-repeat="worker in mainCtrl.workers | orderBy:'name'" 
                     ng-class="[{'bg-success': worker.status.OverallStatusLevel === 'GREEN'}, {'bg-warning': worker.status.OverallStatusLevel === 'YELLOW'}, {'bg-danger': worker.status.OverallStatusLevel === 'RED'}]"
-                    ng-click="mainCtrl.showWorkerStatusDetails(worker.name)">
-                    <td>{{worker.name}}</td>
+                    ng-click="mainCtrl.showWorkerStatusDetails(worker.Name)">
+                    <td>{{worker.Name}}</td>
                     <td>{{worker.status.LastHeardFrom | date:'dd/MM/yy HH:mm:ss'}}</td>
                     <td>
-                        <span class="glyphicon glyphicon-ok-sign" ng-show="mainCtrl.getAttributeValue(worker.name, 'AcceptsJobs')"></span>
-                        <span class="glyphicon glyphicon-remove-sign" ng-hide="mainCtrl.getAttributeValue(worker.name, 'AcceptsJobs')"></span>
+                        <span class="glyphicon glyphicon-ok-sign" ng-show="worker.IsAcceptingJobs"></span>
+                        <span class="glyphicon glyphicon-remove-sign" ng-hide="worker.IsAcceptingJobs"></span>
                     </td>
                 </tr>
             </table>

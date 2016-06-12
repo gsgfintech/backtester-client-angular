@@ -1,210 +1,40 @@
 <div class="row">
-    <div class="col-lg-12">
-        <uib-accordion close-others="false">
-            <uib-accordion-group is-open="jobsCtrl.currentStep == 1" is-disabled="jobsCtrl.currentStep != 1" panel-class="{{jobsCtrl.stepPanelsClasses[0]}}">
-                <uib-accordion-heading>
-                    1. Select Strategy Assembly File
-                    <span class="glyphicon glyphicon-ok-sign text-success pull-right" ng-show="jobsCtrl.stepPanelsClasses[0] === 'panel-success'"></span>
-                </uib-accordion-heading>
-                <form role="form" ng-submit="jobsCtrl.submitStep1()">
-                    <div class="row">
-                        <div class="col-xs-12">
-                            <button class="btn btn-primary" ngf-select="jobsCtrl.upload($file, $invalidFiles)" ng-show="jobsCtrl.canUpload">Select Strategy DLL File</button>
-
-                            <div class="panel panel-success" ng-show="jobsCtrl.fileUploadResult.Success == true">
-                                <div class="panel-heading">
-                                    Successfully uploaded file <strong>{{jobsCtrl.fileToUpload.name}}</strong>
-                                </div>
-                                <table class="table">
-                                    <tr>
-                                        <th>Crosses</th>
-                                        <td>{{jobsCtrl.fileUploadResult.Crosses.toString()}}</td>
-                                    </tr>
-                                    <tr>
-                                        <th colspan="2">Strategy</th>
-                                    </tr>
-                                    <tr>
-                                        <td>Name</td>
-                                        <td>{{jobsCtrl.fileUploadResult.StrategyName}}</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Version</td>
-                                        <td>{{jobsCtrl.fileUploadResult.StrategyVersion}}</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Class</td>
-                                        <td>{{jobsCtrl.fileUploadResult.StrategyClass}}</td>
-                                    </tr>
-                                    <tr>
-                                        <th colspan="2">Algorithm</th>
-                                    </tr>
-                                    <tr>
-                                        <td>Class</td>
-                                        <td>{{jobsCtrl.fileUploadResult.AlgorithmClass}}</td>
-                                    </tr>
-                                </table>
-                            </div>
-                            <div class="panel panel-danger" ng-show="jobsCtrl.fileUploadResult.Success == false">
-                                <div class="panel-heading">
-                                    Failed to upload file <strong>{{jobsCtrl.fileToUpload.name}}</strong>
-                                </div>
-                                <div class="panel-body">
-                                    {{jobsCtrl.fileUploadResult.Message}}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-xs-12">
-                            <div class="btn-group" style="margin-top: 16px">
-                                <button type="button" class="btn btn-danger" ng-disabled="!jobsCtrl.fileToUpload" ng-click="jobsCtrl.resetFile()">Reset</button>
-                                <button type="submit" class="btn btn-success" ng-disabled="jobsCtrl.fileUploadResult.Success != true">Next</button>
-                            </div>
-                        </div>
-                    </div>
-                </form>
-            </uib-accordion-group>
-            <uib-accordion-group is-open="jobsCtrl.currentStep == 2" is-disabled="jobsCtrl.currentStep != 2" panel-class="{{jobsCtrl.stepPanelsClasses[1]}}">
-                <uib-accordion-heading>
-                    2. Review Strategy Parameters
-                    <span class="glyphicon glyphicon-ok-sign text-success pull-right" ng-show="jobsCtrl.stepPanelsClasses[1] === 'panel-success'"></span>
-                </uib-accordion-heading>
-                <form role="form" class="form-horizontal" ng-submit="jobsCtrl.submitStep2()">
-                    <div class="form-group" ng-repeat="param in jobsCtrl.backtestJobSettings.Parameters | orderBy:'Name'">
-                        <div ng-switch on="param.Type">
-                            <!-- Not checkbox -->
-                            <label class="control-label col-sm-6" for="param-{{param.Name}}" ng-hide="param.Type === 'Boolean'">{{param.Name}}</label>
-
-                            <div class="col-sm-6">
-                                <!-- Integer -->
-                                <input type="number" class="form-control" id="param-{{param.Name}}" ng-model="param.Value" ng-switch-when="Int32" />
-
-                                <!-- Double -->
-                                <input type="number" step="0.00001" class="form-control" id="param-{{param.Name}}" ng-model="param.Value" ng-switch-when="Double" />
-
-                                <!-- Text -->
-                                <input type="text" class="form-control" id="param-{{param.Name}}" ng-model="param.Value" ng-switch-default />
-                            </div>
-
-                            <!-- Checkbox -->
-                            <div class="col-sm-offset-6 col-sm-6" ng-switch-when="Boolean">
-                                <div class="checkbox">
-                                    <label>
-                                        <input type="checkbox" ng-model="param.Value" /> {{param.Name}}
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-danger" ng-click="jobsCtrl.goBackToStep1()">Back</button>
-                        <button type="submit" class="btn btn-success">Next</button>
-                    </div>
-                </form>
-            </uib-accordion-group>
-            <uib-accordion-group is-open="jobsCtrl.currentStep == 3" is-disabled="jobsCtrl.currentStep != 3" panel-class="{{jobsCtrl.stepPanelsClasses[2]}}">
-                <uib-accordion-heading>
-                    3. Select Time Range
-                    <span class="glyphicon glyphicon-ok-sign text-success pull-right" ng-show="jobsCtrl.stepPanelsClasses[2] === 'panel-success'"></span>
-                </uib-accordion-heading>
-                <form name="form-step-3" role="form" class="form-horizontal" ng-submit="jobsCtrl.submitStep3()">
-                    <div class="row">
-                        <div class="col-sm-6 form-group">
-                            <label for="start-date" class="col-sm-6 col-md-4 control-label">Start Date:</label>
-                            <p class="input-group col-sm-6 col-md-8">
-                                <input name="start-date" type="date" class="form-control" uib-datepicker-popup ng-model="jobsCtrl.lowerBoundDate" is-open="jobsCtrl.lowerBoundDateOpen" datepicker-options="jobsCtrl.dateOptions" ng-required="true" close-text="Close" />
-                                <span class="input-group-btn">
-                                    <button type="button" class="btn btn-default" ng-click="jobsCtrl.openDatePicker('lowerDate')"><i class="glyphicon glyphicon-calendar"></i></button>
-                                </span>
-                            </p>
-                        </div>
-                        <div class="col-sm-6 form-group">
-                            <label for="start-time" class="col-sm-6 col-md-4 control-label">Start Time:</label>
-                            <p title="start-time" class="input-group col-sm-6 col-md-8">
-                                <uib-timepicker ng-model="jobsCtrl.lowerBoundTime" show-meridian="false" show-spinners="false" ng-required="true"></uib-timepicker>
-                            </p>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-6 form-group">
-                            <label for="end-date" class="col-sm-6 col-md-4 control-label">End Date:</label>
-                            <p class="input-group col-sm-6 col-md-8">
-                                <input name="end-date" type="date" class="form-control" uib-datepicker-popup ng-model="jobsCtrl.upperBoundDate" is-open="jobsCtrl.upperBoundDateOpen" datepicker-options="jobsCtrl.dateOptions" ng-required="true" close-text="Close" />
-                                <span class="input-group-btn">
-                                    <button type="button" class="btn btn-default" ng-click="jobsCtrl.openDatePicker('upperDate')"><i class="glyphicon glyphicon-calendar"></i></button>
-                                </span>
-                            </p>
-                        </div>
-                        <div class="col-sm-6 form-group">
-                            <label for="end-time" class="col-sm-6 col-md-4 control-label">End Time:</label>
-                            <p title="end-time" class="input-group col-sm-6 col-md-8">
-                                <uib-timepicker ng-model="jobsCtrl.upperBoundTime" show-meridian="false" show-spinners="false" ng-required="true"></uib-timepicker>
-                            </p>
-                        </div>
-                    </div>
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-danger" ng-click="jobsCtrl.goBackToStep2()">Back</button>
-                        <button type="submit" class="btn btn-success" ng-disabled="$invalid">Next</button>
-                    </div>
-                </form>
-            </uib-accordion-group>
-            <uib-accordion-group is-open="jobsCtrl.currentStep == 4" is-disabled="jobsCtrl.currentStep != 4" panel-class="{{jobsCtrl.stepPanelsClasses[3]}}">
-                <uib-accordion-heading>
-                    4. Review And Submit
-                    <span class="glyphicon glyphicon-ok-sign text-success pull-right" ng-show="jobsCtrl.stepPanelsClasses[3] === 'panel-success'"></span>
-                </uib-accordion-heading>
-                <form name="form-step-4" role="form" ng-submit="jobsCtrl.submitStep4()">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            Strategy
-                        </div>
-                        <table class="table">
-                            <tr>
-                                <th>File</th>
-                                <td>{{jobsCtrl.backtestJobSettings.FileName}}</td>
-                            </tr>
-                            <tr>
-                                <th>Strategy</th>
-                                <td>{{jobsCtrl.backtestJobSettings.StrategyName}} v{{jobsCtrl.backtestJobSettings.StrategyVersion}}</td>
-                            </tr>
-                            <tr>
-                                <th>Cross(es)</th>
-                                <td>{{jobsCtrl.backtestJobSettings.Crosses.toString()}}</td>
-                            </tr>
-                        </table>
-                    </div>
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            Parameters
-                        </div>
-                        <table class="table">
-                            <tr ng-repeat="param in jobsCtrl.backtestJobSettings.Parameters | orderBy:'Name'">
-                                <th>{{param.Name}}</th>
-                                <td>{{param.Value}}</td>
-                            </tr>
-                        </table>
-                    </div>
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            Time Range
-                        </div>
-                        <table class="table">
-                            <tr>
-                                <th>Start</th>
-                                <td>{{jobsCtrl.backtestJobSettings.Start | date:'dd/MM/yy HH:mm'}} (HKT)</td>
-                            </tr>
-                            <tr>
-                                <th>End</th>
-                                <td>{{jobsCtrl.backtestJobSettings.End | date:'dd/MM/yy HH:mm'}} (HKT)</td>
-                            </tr>
-                        </table>
-                    </div>
-                    <div class="btn-group" style="margin-top: 16px">
-                        <button type="button" class="btn btn-danger" ng-click="jobsCtrl.goBackToStep3()">Back</button>
-                        <button type="submit" class="btn btn-success">Submit Backtest Job</button>
-                    </div>
-                </form>
-            </uib-accordion-group>
-        </uib-accordion>
+    <div class="col-xs-12">
+        <div class="panel panel-default">
+            <div class="panel-title">
+                <h4>Pending Jobs</h4>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <tr>
+                        <th>Name</th>
+                        <th>Created (HKT)</th>
+                        <th>Status</th>
+                        <th>Scheduled Start (HKT)</th>
+                        <th>Worker</th>
+                        <th></th>
+                    </tr>
+                    <tr ng-repeat="job in jobsCtrl.pendingJobs">
+                        <td ng-click="jobsCtrl.showJobDetails(job.Name)"><a href="">{{job.Name}}</a></td>
+                        <td>{{job.CreateTime | date:'dd/MM/yy HH:mm:ss'}}</td>
+                        <td>{{job.Status}}</td>
+                        <td>{{job.ScheduledStartTime | date:'dd/MM/yy HH:mm:ss'}}</td>
+                        <td><a href ng-click="jobsCtrl.showWorkerDetails(job.Worker)">{{job.Worker}}</a></td>
+                        <td>
+                            <button class="btn btn-danger btn-xs" ng-click="jobsCtrl.deleteJob(job.Name)">
+                                <span class="glyphicon glyphicon-remove-sign"></span>
+                            </button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="6">
+                            <button class="btn btn-success" ng-click="jobsCtrl.createJob()">
+                                <span class="glyphicon glyphicon-plus-sign"></span> Add New
+                            </button>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
     </div>
 </div>

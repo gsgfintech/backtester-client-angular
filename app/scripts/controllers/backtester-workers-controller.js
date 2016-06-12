@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('backtesterclientApp')
-.controller('BacktesterWorkersCtrl', ['$uibModal', 'BacktesterWorkersService', function ($uibModal, BacktesterWorkersService) {
+.controller('BacktesterWorkersCtrl', ['$uibModal', 'BacktesterWorkersService', 'JobsService', function ($uibModal, BacktesterWorkersService, JobsService) {
 
     var self = this;
 
@@ -11,8 +11,8 @@ angular.module('backtesterclientApp')
         BacktesterWorkersService.addWorkerConfig();
     };
 
-    self.delete = function (config) {
-        BacktesterWorkersService.deleteWorkerConfig(config);
+    self.delete = function (name) {
+        BacktesterWorkersService.deleteWorker(name);
     };
 
     self.edit = function (worker) {
@@ -42,6 +42,22 @@ angular.module('backtesterclientApp')
 
     self.getAttributeValue = function (workerName, attributeName) {
         return BacktesterWorkersService.getAttributeValue(workerName, attributeName);
+    };
+
+    self.workerAcceptJobs = function (name) {
+        BacktesterWorkersService.workerAcceptJobs(name);
+    };
+
+    self.workerRejectJobs = function (name) {
+        BacktesterWorkersService.workerRejectJobs(name);
+    };
+
+    self.showWorkerDetails = function (name) {
+        BacktesterWorkersService.showWorkerDetails(name);
+    };
+
+    self.showJobDetails = function (jobName) {
+        JobsService.showJobDetails(jobName);
     };
 
 }]);
