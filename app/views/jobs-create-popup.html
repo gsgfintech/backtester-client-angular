@@ -193,26 +193,20 @@
                         </div>
                         <table class="table">
                             <tr>
-                                <th>Start</th>
-                                <td ng-hide="jobsCtrl.backtestJobSettings.UseAllDay">
-                                    {{jobsCtrl.backtestJobSettings.Start | date:'dd/MM/yy HH:mm'}} (HKT)
-                                </td>
-                                <td ng-show="jobsCtrl.backtestJobSettings.UseAllDay">
-                                    {{jobsCtrl.backtestJobSettings.Start | date:'dd/MM/yy'}} (HKT)
-                                </td>
+                                <th>Begin Date</th>
+                                <td>{{jobsCtrl.backtestJobSettings.StartDate | date:'dd/MM/yy'}}</td>
                             </tr>
                             <tr>
-                                <th>End</th>
-                                <td ng-hide="jobsCtrl.backtestJobSettings.UseAllDay">
-                                    {{jobsCtrl.backtestJobSettings.End | date:'dd/MM/yy HH:mm'}} (HKT)
-                                </td>
-                                <td ng-show="jobsCtrl.backtestJobSettings.UseAllDay">
-                                    {{jobsCtrl.backtestJobSettings.End | date:'dd/MM/yy'}} (HKT)
-                                </td>
+                                <th>End Date</th>
+                                <td>{{jobsCtrl.backtestJobSettings.EndDate | date:'dd/MM/yy'}}</td>
                             </tr>
                             <tr>
-                                <th>All Day</th>
-                                <td>{{jobsCtrl.backtestJobSettings.UseAllDay}}</td>
+                                <th>Begin Time (HKT)</th>
+                                <td>{{jobsCtrl.backtestJobSettings.StartTime | date:'HH:mm'}}</td>
+                            </tr>
+                            <tr>
+                                <th>End Time (HKT)</th>
+                                <td>{{jobsCtrl.backtestJobSettings.EndTime | date:'HH:mm'}}</td>
                             </tr>
                         </table>
                     </div>

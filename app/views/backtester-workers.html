@@ -32,8 +32,12 @@
                         </td>
                         <td>
                             <div class="btn-group btn-group-xs">
-                                <button class="btn btn-default btn-xs" ng-click="backtesterWorkersCtrl.edit(worker.Name)">Edit Config</button>
-                                <button class="btn btn-danger btn-xs" ng-click="backtesterWorkersCtrl.delete(worker.Name)">Delete Worker</button>
+                                <button class="btn btn-warning btn-xs" ng-click="backtesterWorkersCtrl.edit(worker.Name)">
+                                    <span class="glyphicon glyphicon-edit"></span>
+                                </button>
+                                <button class="btn btn-danger btn-xs" ng-click="backtesterWorkersCtrl.delete(worker.Name)">
+                                    <span class="glyphicon glyphicon-remove-sign"></span>
+                                </button>
                             </div>
                         </td>
                     </tr>

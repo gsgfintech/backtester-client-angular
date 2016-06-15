@@ -1,16 +1,21 @@
 <div class="row">
     <div class="col-xs-12">
+        <div style="margin: 0.8em">
+            <button class="btn btn-success" ng-click="jobsCtrl.createJob()">
+                <span class="glyphicon glyphicon-plus-sign"></span> Create A New Job
+            </button>
+        </div>
         <div class="panel panel-default">
-            <div class="panel-title">
-                <h4>Pending Jobs</h4>
+            <div class="panel-heading">
+                <h4>Active Jobs</h4>
             </div>
-            <div class="table-responsive">
+            <div class="table-responsive" ng-show="jobsCtrl.pendingJobs.length">
                 <table class="table table-hover">
                     <tr>
                         <th>Name</th>
                         <th>Created (HKT)</th>
                         <th>Status</th>
-                        <th>Scheduled Start (HKT)</th>
+                        <th>Start Time (HKT)</th>
                         <th>Worker</th>
                         <th></th>
                     </tr>
@@ -18,7 +23,7 @@
                         <td ng-click="jobsCtrl.showJobDetails(job.Name)"><a href="">{{job.Name}}</a></td>
                         <td>{{job.CreateTime | date:'dd/MM/yy HH:mm:ss'}}</td>
                         <td>{{job.Status}}</td>
-                        <td>{{job.ScheduledStartTime | date:'dd/MM/yy HH:mm:ss'}}</td>
+                        <td>{{job.ActualStartTime | date:'dd/MM/yy HH:mm:ss'}}</td>
                         <td><a href ng-click="jobsCtrl.showWorkerDetails(job.Worker)">{{job.Worker}}</a></td>
                         <td>
                             <button class="btn btn-danger btn-xs" ng-click="jobsCtrl.deleteJob(job.Name)">
@@ -26,14 +31,42 @@
                             </button>
                         </td>
                     </tr>
+                </table>
+            </div>
+            <div class="panel-body" ng-hide="jobsCtrl.pendingJobs.length">
+                <p>No active job</p>
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4>Today's Inactive Jobs</h4>
+            </div>
+            <div class="table-responsive" ng-show="jobsCtrl.inactiveJobs.length">
+                <table class="table table-hover">
                     <tr>
-                        <td colspan="6">
-                            <button class="btn btn-success" ng-click="jobsCtrl.createJob()">
-                                <span class="glyphicon glyphicon-plus-sign"></span> Add New
+                        <th>Name</th>
+                        <th>Created (HKT)</th>
+                        <th>Status</th>
+                        <th>Completion Time (HKT)</th>
+                        <th>Worker</th>
+                        <th></th>
+                    </tr>
+                    <tr ng-repeat="job in jobsCtrl.inactiveJobs">
+                        <td ng-click="jobsCtrl.showJobDetails(job.Name)"><a href="">{{job.Name}}</a></td>
+                        <td>{{job.CreateTime | date:'dd/MM/yy HH:mm:ss'}}</td>
+                        <td>{{job.Status}}</td>
+                        <td>{{job.CompletionTime | date:'dd/MM/yy HH:mm:ss'}}</td>
+                        <td><a href ng-click="jobsCtrl.showWorkerDetails(job.Worker)">{{job.Worker}}</a></td>
+                        <td>
+                            <button class="btn btn-danger btn-xs" ng-click="jobsCtrl.deleteJob(job.Name)">
+                                <span class="glyphicon glyphicon-remove-sign"></span>
                             </button>
                         </td>
                     </tr>
                 </table>
+            </div>
+            <div class="panel-body" ng-hide="jobsCtrl.inactiveJobs.length">
+                <p>No inactive job today</p>
             </div>
         </div>
     </div>

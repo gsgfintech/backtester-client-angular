@@ -40,6 +40,13 @@ angular.module('backtesterclientApp')
                 $rootScope.$broadcast('newExecutionReceivedEvent', execution);
             },
 
+            // Jobs
+            'reloadJobs': function () {
+                console.log('Received request to reload jobs lists');
+
+                $rootScope.$broadcast('reloadJobRequestedEvent');
+            },
+
             // Order
             'orderUpdateReceived': function (order) {
                 console.log('Received order update for ', order.OrderID);

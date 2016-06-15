@@ -65,6 +65,10 @@ angular.module('backtesterclientApp')
         return JobsByStatusWebService.query({ status: 'active' });
     }
 
+    function getInactiveJobs() {
+        return JobsByStatusWebService.query({ status: 'inactive' });
+    }
+
     function uploadStratDllFile(file, progressCb, successCb, errorCb) {
         if (file) {
             var address = serverEndpoint + 'api/strats/file';
@@ -102,9 +106,10 @@ angular.module('backtesterclientApp')
             job.StrategyName = settings.StrategyName;
             job.StrategyVersion = settings.StrategyVersion;
             job.Crosses = settings.Crosses;
-            job.Start = settings.Start;
-            job.End = settings.End;
-            job.UseAllDay = settings.UseAllDay;
+            job.StartDate = settings.StartDate;
+            job.EndDate = settings.EndDate;
+            job.StartTime = settings.StartTime;
+            job.EndTime = settings.EndTime;
 
             job.$save(function (result) {
                 if (result.success) {
@@ -161,6 +166,7 @@ angular.module('backtesterclientApp')
         createJob: createJob,
         deleteJob: deleteJob,
         getJobByName: getJobByName,
+        getInactiveJobs: getInactiveJobs,
         getPendingJobs: getPendingJobs,
         showJobDetails: showJobDetails,
         uploadStratDllFile: uploadStratDllFile
