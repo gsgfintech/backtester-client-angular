@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('backtesterclientApp')
-.factory('BacktesterClientHubService', ['$rootScope', 'Hub', 'PopupService', 'serverEndpoint', function ($rootScope, Hub, PopupService, serverEndpoint) {
+.factory('BacktesterClientHubService', ['$rootScope', 'Hub', 'serverEndpoint', function ($rootScope, Hub, serverEndpoint) {
 
     var ready = false;
 
@@ -10,34 +10,17 @@ angular.module('backtesterclientApp')
         listeners: {
 
             // Alerts
-            'alertsClosed': function (alertIds) {
-                console.log('Several alerts were closed');
+            'newAlertReceived': function (jobName, alert) {
+                console.log('Received alert update for', jobName);
 
-                $rootScope.$broadcast('alertsClosedEvent', alertIds);
-            },
-            'newAlertReceived': function (alert) {
-                // Show popup
-                if (alert.Level === 'INFO') {
-                    PopupService.showNote('[INFO] ' + alert.Source, alert.Subject);
-                } else if (alert.Level === 'WARNING') {
-                    PopupService.showWarning('[WARNING] ' + alert.Source, alert.Subject);
-                } else {
-                    PopupService.showError('[ERROR] ' + alert.Source, alert.Subject);
-                }
-
-                $rootScope.$broadcast('newAlertReceivedEvent', alert);
+                $rootScope.$broadcast('newAlertReceivedEvent', { jobName: jobName, alert: alert });
             },
 
             // Executions
-            'newExecutionReceived': function (execution) {
-                var message = execution.Side + ' ' + execution.Quantity + ' ' + execution.Cross + ' @ ' + execution.Price;
+            'newExecutionReceived': function (jobName, execution) {
+                console.log('Received trade update for', jobName);
 
-                console.log('Received new execution:', message, '-', execution.ExecutionId);
-
-                // Show popup
-                PopupService.showSuccess('[TRADE]', message);
-
-                $rootScope.$broadcast('newExecutionReceivedEvent', execution);
+                $rootScope.$broadcast('newExecutionReceivedEvent', { jobName: jobName, execution: execution });
             },
 
             // Jobs
@@ -48,17 +31,17 @@ angular.module('backtesterclientApp')
             },
 
             // Order
-            'orderUpdateReceived': function (order) {
-                console.log('Received order update for ', order.OrderID);
+            'orderUpdateReceived': function (jobName, order) {
+                console.log('Received order update for', jobName);
 
-                $rootScope.$broadcast('orderUpdateReceivedEvent', order);
+                $rootScope.$broadcast('orderUpdateReceivedEvent', { jobName: jobName, order: order });
             },
 
             // Positions
-            'newPositionReceived': function (position) {
-                console.log('Received position update');
+            'newPositionReceived': function (jobName, position) {
+                console.log('Received position update for', jobName);
 
-                $rootScope.$broadcast('newPositionReceivedEvent', position);
+                $rootScope.$broadcast('newPositionReceivedEvent', { jobName: jobName, position: position });
             },
 
             // Status Updates

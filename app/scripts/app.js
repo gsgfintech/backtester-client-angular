@@ -19,7 +19,7 @@ angular.module('backtesterclientApp', ['ngAnimate', 'ngCookies', 'ngFileUpload',
         templateUrl: 'views/job-details.html',
         controller: 'JobDetailsCtrl',
         controllerAs: 'jobDetailsCtrl',
-        url: '/jobs/:jobName'
+        url: '/jobs/:jobName/:activeTab'
     }).state('workers', {
         templateUrl: 'views/backtester-workers.html',
         controller: 'BacktesterWorkersCtrl',

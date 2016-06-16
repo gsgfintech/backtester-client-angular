@@ -15,31 +15,61 @@ angular.module('backtesterclientApp')
         status: '@Status'
     });
 }])
-.factory('JobsService', ['$uibModal', 'JobsByNameWebService', 'JobsByStatusWebService', 'PopupService', 'serverEndpoint', 'Upload', function ($uibModal, JobsByNameWebService, JobsByStatusWebService, PopupService, serverEndpoint, Upload) {
+.factory('JobsService', ['$rootScope', '$uibModal', 'CommonsService', 'JobsByNameWebService', 'JobsByStatusWebService', 'serverEndpoint', 'Upload', function ($rootScope, $uibModal, CommonsService, JobsByNameWebService, JobsByStatusWebService, serverEndpoint, Upload) {
 
-    function notifyError(errMsg, cb) {
-        console.error(errMsg);
-        PopupService.showError(errMsg);
+    var activeJobs = [];
+    var inactiveJobs = [];
 
-        if (cb) {
-            cb(errMsg);
+    function findJob(array, jobName) {
+        for (var i = 0; i < array.length; i++) {
+            if (array[i].Name === jobName) {
+                return array[i];
+            }
+        }
+
+        return null;
+    }
+
+    function populateJobs(jobsReceived, jobsToPopulate) {
+        jobsToPopulate.splice(0, jobsToPopulate.length);
+
+        for (var i = 0; i < jobsReceived.length; i++) {
+            jobsToPopulate.push(jobsReceived[i]);
         }
     }
 
-    function notifySuccess(msg, cb) {
-        console.log(msg);
-        PopupService.showSuccess(msg);
+    function loadJobs() {
+        JobsByStatusWebService.query({ status: 'active' }, function (newActiveJobs) {
+            populateJobs(newActiveJobs, activeJobs);
 
-        if (cb) {
-            cb(msg);
-        }
+            JobsByStatusWebService.query({ status: 'inactive' }, function (newInactiveJobs) {
+                populateJobs(newInactiveJobs, inactiveJobs);
+            });
+        });
     }
 
-    function getJobByName(jobName, successCb, errCb) {
+    function handleDbActionResult(result) {
+        CommonsService.handleDbActionResult(result, loadJobs);
+    }
+
+    function getJobByName(jobName, cb) {
+        // 1. Look in active jobs
+        var job = findJob(activeJobs, jobName);
+
+        if (job) {
+            cb(job);
+        }
+
+        // 2. Look in inactive jobs
+        job = findJob(inactiveJobs, jobName);
+
+        if (job) {
+            cb(job);
+        }
+
+        // 3. Finally try to get it from the database
         JobsByNameWebService.get({ jobName: jobName }, function (job) {
-            successCb(job);
-        }, function (err) {
-            errCb(err);
+            cb(job);
         });
     }
 
@@ -56,17 +86,7 @@ angular.module('backtesterclientApp')
                     }
                 }
             });
-        }, function (err) {
-            console.error(err);
         });
-    }
-
-    function getPendingJobs() {
-        return JobsByStatusWebService.query({ status: 'active' });
-    }
-
-    function getInactiveJobs() {
-        return JobsByStatusWebService.query({ status: 'inactive' });
     }
 
     function uploadStratDllFile(file, progressCb, successCb, errorCb) {
@@ -90,7 +110,7 @@ angular.module('backtesterclientApp')
         }
     }
 
-    function createJob(successCb, errorCb) {
+    function createJob() {
         var modalInstance = $uibModal.open({
             templateUrl: 'views/jobs-create-popup.html',
             controller: 'JobsCreateCtrl',
@@ -98,32 +118,14 @@ angular.module('backtesterclientApp')
             size: 'lg'
         });
 
-        modalInstance.result.then(function (settings) {
-            var job = new JobsByNameWebService();
-
-            job.FileName = settings.FileName;
-            job.Parameters = settings.Parameters;
-            job.StrategyName = settings.StrategyName;
-            job.StrategyVersion = settings.StrategyVersion;
-            job.Crosses = settings.Crosses;
-            job.StartDate = settings.StartDate;
-            job.EndDate = settings.EndDate;
-            job.StartTime = settings.StartTime;
-            job.EndTime = settings.EndTime;
-
-            job.$save(function (result) {
-                if (result.success) {
-                    notifySuccess(result.message, successCb);
-                } else {
-                    notifyError(result.message, errorCb);
-                }
-            }, function (err) {
-                notifyError(err, errorCb);
-            });
+        modalInstance.result.then(function (newJobSettings) {
+            JobsByNameWebService.save(newJobSettings, handleDbActionResult);
         });
     }
 
-    function deleteJob(jobName, successCb, errCb) {
+    function deleteJob(jobName) {
+        console.log('Delete job', jobName);
+
         var modalInstance = $uibModal.open({
             templateUrl: 'views/action-confirm-popup.html',
             controller: 'ActionConfirmPopupCtrl',
@@ -136,38 +138,72 @@ angular.module('backtesterclientApp')
                     return 'delete backtest job ' + jobName;
                 },
                 objToPass: function () {
-                    return null;
+                    return jobName;
                 }
             }
         });
 
-        modalInstance.result.then(function () {
-            console.log('Requesting to delete backtest job', jobName);
-
-            JobsByNameWebService.get({ jobName: jobName }, function (jobToDelete) {
-                if (jobToDelete) {
-                    jobToDelete.$delete({ jobName: jobName }, function (result) {
-                        if (result.success) {
-                            notifySuccess(result.message, successCb);
-                        } else {
-                            notifyError(result.message, errCb);
-                        }
-                    }, function (err) {
-                        notifyError(err, errCb);
-                    });
-                } else {
-                    notifyError('Failed to delete unknown job ' + jobName, errCb);
-                }
-            });
+        modalInstance.result.then(function (jobNameToDelete) {
+            JobsByNameWebService.delete({ jobName: jobNameToDelete }, handleDbActionResult);
         });
     }
+
+    function getActiveJobs() {
+        return activeJobs;
+    }
+
+    function getInactiveJobs() {
+        return inactiveJobs;
+    }
+
+    // Event listeners
+    $rootScope.$on('reloadJobRequestedEvent', function () {
+        loadJobs();
+    });
+
+    $rootScope.$on('newAlertReceivedEvent', function (event, data) {
+        var job = findJob(activeJobs, data.jobName);
+
+        if (job) {
+            job.Output.Alerts.push(data.alert);
+            $rootScope.$apply();
+        }
+    });
+
+    $rootScope.$on('newExecutionReceivedEvent', function (event, data) {
+        var job = findJob(activeJobs, data.jobName);
+
+        if (job) {
+            job.Output.Trades.push(data.execution);
+            $rootScope.$apply();
+        }
+    });
+
+    $rootScope.$on('orderUpdateReceivedEvent', function (event, data) {
+        var job = findJob(activeJobs, data.jobName);
+
+        if (job) {
+            job.Output.Orders.push(data.order);
+            $rootScope.$apply();
+        }
+    });
+
+    $rootScope.$on('newPositionReceivedEvent', function (event, data) {
+        var job = findJob(activeJobs, data.jobName);
+
+        if (job) {
+            job.Output.Positions.push(data.position);
+            $rootScope.$apply();
+        }
+    });
 
     return {
         createJob: createJob,
         deleteJob: deleteJob,
-        getJobByName: getJobByName,
+        getActiveJobs: getActiveJobs,
         getInactiveJobs: getInactiveJobs,
-        getPendingJobs: getPendingJobs,
+        getJobByName: getJobByName,
+        loadJobs: loadJobs,
         showJobDetails: showJobDetails,
         uploadStratDllFile: uploadStratDllFile
     };

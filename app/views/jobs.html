@@ -9,7 +9,7 @@
             <div class="panel-heading">
                 <h4>Active Jobs</h4>
             </div>
-            <div class="table-responsive" ng-show="jobsCtrl.pendingJobs.length">
+            <div class="table-responsive" ng-show="jobsCtrl.activeJobs.length">
                 <table class="table table-hover">
                     <tr>
                         <th>Name</th>
@@ -19,8 +19,8 @@
                         <th>Worker</th>
                         <th></th>
                     </tr>
-                    <tr ng-repeat="job in jobsCtrl.pendingJobs">
-                        <td ng-click="jobsCtrl.showJobDetails(job.Name)"><a href="">{{job.Name}}</a></td>
+                    <tr ng-repeat="job in jobsCtrl.activeJobs">
+                        <td><a href="#/jobs/{{job.Name}}/info">{{job.Name}}</a> <span class="badge btn" ng-click="jobsCtrl.showJobDetails(job.Name)">Info</span></td>
                         <td>{{job.CreateTime | date:'dd/MM/yy HH:mm:ss'}}</td>
                         <td>{{job.Status}}</td>
                         <td>{{job.ActualStartTime | date:'dd/MM/yy HH:mm:ss'}}</td>
@@ -33,7 +33,7 @@
                     </tr>
                 </table>
             </div>
-            <div class="panel-body" ng-hide="jobsCtrl.pendingJobs.length">
+            <div class="panel-body" ng-hide="jobsCtrl.activeJobs.length">
                 <p>No active job</p>
             </div>
         </div>
@@ -52,7 +52,7 @@
                         <th></th>
                     </tr>
                     <tr ng-repeat="job in jobsCtrl.inactiveJobs">
-                        <td ng-click="jobsCtrl.showJobDetails(job.Name)"><a href="">{{job.Name}}</a></td>
+                        <td><a href="#/jobs/{{job.Name}}/info">{{job.Name}}</a> <span class="badge btn" ng-click="jobsCtrl.showJobDetails(job.Name)">Info</span></td>
                         <td>{{job.CreateTime | date:'dd/MM/yy HH:mm:ss'}}</td>
                         <td>{{job.Status}}</td>
                         <td>{{job.CompletionTime | date:'dd/MM/yy HH:mm:ss'}}</td>

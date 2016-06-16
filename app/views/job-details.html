@@ -1,5 +1,30 @@
 <div class="row">
-    <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12 col-lg-offset-3">
-        <job-details job="jobDetailsCtrl.job"></job-details>
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <uib-tabset active="jobDetailsCtrl.activeTabIndex">
+            <uib-tab heading="Info" select="jobDetailsCtrl.updateLocation('info')">
+                <job-details job="jobDetailsCtrl.job"></job-details>
+            </uib-tab>
+            <uib-tab select="jobDetailsCtrl.updateLocation('alerts')">
+                <uib-tab-heading>
+                    Alerts <span class="badge">{{jobDetailsCtrl.job.Output.Alerts.length}}</span>
+                </uib-tab-heading>
+                <job-alerts name="jobDetailsCtrl.job.Name" alerts="jobDetailsCtrl.job.Output.Alerts"></job-alerts>
+            </uib-tab>
+            <uib-tab select="jobDetailsCtrl.updateLocation('orders')">
+                <uib-tab-heading>
+                    Orders <span class="badge">{{jobDetailsCtrl.job.Output.Orders.length}}</span>
+                </uib-tab-heading>
+                <job-orders name="jobDetailsCtrl.job.Name" orders="jobDetailsCtrl.job.Output.Orders"></job-orders>
+            </uib-tab>
+            <uib-tab select="jobDetailsCtrl.updateLocation('trades')">
+                <uib-tab-heading>
+                    Trades <span class="badge">{{jobDetailsCtrl.job.Output.Trades.length}}</span>
+                </uib-tab-heading>
+                <job-trades name="jobDetailsCtrl.job.Name" trades="jobDetailsCtrl.job.Output.Trades"></job-trades>
+            </uib-tab>
+            <uib-tab heading="Positions" select="jobDetailsCtrl.updateLocation('positions')">
+                <job-positions name="jobDetailsCtrl.job.Name" positions="jobDetailsCtrl.job.Output.Positions"></job-positions>
+            </uib-tab>
+        </uib-tabset>
     </div>
 </div>

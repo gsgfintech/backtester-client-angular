@@ -5,12 +5,11 @@ angular.module('backtesterclientApp')
 
     var self = this;
 
-    function reloadJobs() {
-        self.pendingJobs = JobsService.getPendingJobs();
-        self.inactiveJobs = JobsService.getInactiveJobs();
+    function loadJobs() {
+        JobsService.loadJobs();
     }
 
-    self.pendingJobs = JobsService.getPendingJobs();
+    self.activeJobs = JobsService.getActiveJobs();
     self.inactiveJobs = JobsService.getInactiveJobs();
 
     self.showJobDetails = function (jobName) {
@@ -22,16 +21,13 @@ angular.module('backtesterclientApp')
     };
 
     self.createJob = function () {
-        JobsService.createJob(reloadJobs, reloadJobs);
+        JobsService.createJob();
     };
 
     self.deleteJob = function (jobName) {
-        JobsService.deleteJob(jobName, reloadJobs, reloadJobs);
+        JobsService.deleteJob(jobName);
     };
 
-    // Event handlers
-    $rootScope.$on('reloadJobRequestedEvent', function () {
-        reloadJobs();
-    });
+    loadJobs();
 
 }]);

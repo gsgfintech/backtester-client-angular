@@ -1,0 +1,38 @@
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h4>Orders <small>{{backtestJobName}}</small></h4>
+    </div>
+    <div class="table-responsive" ng-show="backtestJobOrders.length">
+        <table class="table table-hover">
+            <tr>
+                <th>ID</th>
+                <th>Placed Time (HKT)</th>
+                <th>Last Update (HKT)</th>
+                <th>Status</th>
+                <th>Type</th>
+                <th>Side</th>
+                <th>Quantity</th>
+                <th>Pair</th>
+                <th>Limit Price</th>
+                <th>Stop Price</th>
+                <th>Trail Amt</th>
+            </tr>
+            <tr ng-repeat="order in backtestJobOrders">
+                <td>{{order.OrderId}}</td>
+                <td>{{order.PlacedTime | date:'dd/MM/yy HH:mm:ss'}}</td>
+                <td>{{order.LastUpdateTime | date:'dd/MM/yy HH:mm:ss'}}</td>
+                <td>{{order.Status}}</td>
+                <td>{{order.Type}}</td>
+                <td>{{order.Side}}</td>
+                <td>{{order.Quantity}}</td>
+                <td>{{order.Cross}}</td>
+                <td>{{order.LimitPrice}}</td>
+                <td>{{order.StopPrice}}</td>
+                <td>{{order.TrailingAmount}}</td>
+            </tr>
+        </table>
+    </div>
+    <div class="panel-body" ng-hide="backtestJobOrders.length">
+        <p>No order for this job</p>
+    </div>
+</div>
