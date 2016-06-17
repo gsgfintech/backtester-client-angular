@@ -17,7 +17,7 @@
                 <th>Stop Price</th>
                 <th>Trail Amt</th>
             </tr>
-            <tr ng-repeat="order in backtestJobOrders">
+            <tr ng-repeat="order in backtestJobOrders" ng-click="showOrderDetails(order.OrderId)">
                 <td>{{order.OrderId}}</td>
                 <td>{{order.PlacedTime | date:'dd/MM/yy HH:mm:ss'}}</td>
                 <td>{{order.LastUpdateTime | date:'dd/MM/yy HH:mm:ss'}}</td>

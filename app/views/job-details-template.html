@@ -9,10 +9,6 @@
                 <td>{{backtestJob.Name}}</td>
             </tr>
             <tr>
-                <th>Created (HKT)</th>
-                <td>{{backtestJob.CreateTime | date:'dd/MM/yy HH:mm:ss'}}</td>
-            </tr>
-            <tr>
                 <th>Status</th>
                 <td>{{backtestJob.Status}}</td>
             </tr>
@@ -21,15 +17,15 @@
                 <td>{{backtestJob.Worker}}</td>
             </tr>
             <tr>
-                <th>Scheduled Start (HKT)</th>
-                <td>{{backtestJob.ScheduledStartTime | date:'dd/MM/yy HH:mm:ss'}}</td>
+                <th>Created (HKT)</th>
+                <td>{{backtestJob.CreateTime | date:'dd/MM/yy HH:mm:ss'}}</td>
             </tr>
             <tr>
-                <th>Actual Start (HKT)</th>
+                <th>Started (HKT)</th>
                 <td>{{backtestJob.ActualStartTime | date:'dd/MM/yy HH:mm:ss'}}</td>
             </tr>
             <tr>
-                <th>Completion (HKT)</th>
+                <th>Completed (HKT)</th>
                 <td>{{backtestJob.CompletionTime | date:'dd/MM/yy HH:mm:ss'}}</td>
             </tr>
         </table>
@@ -77,6 +73,10 @@
             <tr>
                 <th>DLL Path</th>
                 <td>{{backtestJob.Strategy.DllPath}}</td>
+            </tr>
+            <tr>
+                <th>Type</th>
+                <td>{{backtestJob.Strategy.TypeName}}</td>
             </tr>
             <tr>
                 <th>Crosses</th>

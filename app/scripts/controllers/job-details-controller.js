@@ -1,13 +1,13 @@
 'use strict';
 
 angular.module('backtesterclientApp')
-.controller('JobDetailsCtrl', ['$location', '$state', '$stateParams', 'JobsService', function ($location, $state, $stateParams, JobsService) {
+.controller('JobDetailsCtrl', ['$rootScope', '$location', '$state', '$stateParams', 'JobsService', function ($rootScope, $location, $state, $stateParams, JobsService) {
 
     var self = this;
 
     self.job = null;
 
-    var jobName = $stateParams.jobName;
+    self.jobName = $stateParams.jobName;
 
     var tabs = ['info', 'alerts', 'orders', 'trades', 'positions'];
 
@@ -21,20 +21,34 @@ angular.module('backtesterclientApp')
         }
     }
 
-    self.activeTabIndex = 0;
-
-    self.updateLocation = function (location) {
-        $location.path('/jobs/' + jobName + '/' + location);
-        $state.go('job-details', { jobName: jobName, activeTab: location });
-    };
-
-    findActiveTabIndex();
-
-    if (jobName) {
-        JobsService.getJobByName(jobName, function (job) {
+    function setJob() {
+        JobsService.getJobByName(self.jobName, function (job) {
             self.job = job;
         });
     }
+
+    self.activeTabIndex = 0;
+
+    self.updateLocation = function (location) {
+        $location.path('/jobs/' + self.jobName + '/' + location);
+        $state.go('job-details', { jobName: self.jobName, activeTab: location });
+    };
+
+    self.activeJobs = JobsService.getActiveJobs();
+    self.inactiveJobs = JobsService.getInactiveJobs();
+
+    findActiveTabIndex();
+
+    if (self.jobName) {
+        setJob();
+    }
+
+    // Event handlers
+    $rootScope.$on('jobsService.jobUpdatedEvent', function (event, data) {
+        if (data.jobName === self.jobName || data.jobName === 'all') {
+            setJob();
+        }
+    });
 
 }])
 .controller('JobDetailsPopupCtrl', ['$uibModalInstance', 'job', function ($uibModalInstance, job) {

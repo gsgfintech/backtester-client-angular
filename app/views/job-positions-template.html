@@ -2,7 +2,7 @@
     <div class="panel-heading">
         <h4>Positions <small>{{backtestJobName}}</small></h4>
     </div>
-    <div class="table-responsive" ng-show="backtestJobPositions.PositionSecurities.length">
+    <div class="table-responsive" ng-show="backtestJobPositions[backtestJobPositions.length - 1].PositionSecurities.length">
         <table class="table">
             <tr>
                 <th>Cross</th>
@@ -10,7 +10,7 @@
                 <th>UPnL (USD)</th>
                 <th>RPnL (USD)</th>
             </tr>
-            <tr ng-repeat="position in backtestJobPositions.PositionSecurities | orderBy:'Cross'">
+            <tr ng-repeat="position in backtestJobPositions[backtestJobPositions.length - 1].PositionSecurities | orderBy:'Cross'">
                 <td>{{position.Cross}}</td>
                 <td ng-class="[{'bg-success': position.PositionQuantity > 0}, {'bg-danger': position.PositionQuantity < 0}]">{{position.PositionQuantity / 1000 | number}}<span ng-show="position.PositionQuantity !== 0">K</span></td>
                 <td ng-class="[{'bg-success': position.UnrealizedPnlUsd > 0}, {'bg-danger': position.UnrealizedPnlUsd < 0}]"><span ng-show="position.UnrealizedPnlUsd !== 0">{{position.UnrealizedPnlUsd | number:2}}</span></td>
@@ -18,7 +18,7 @@
             </tr>
         </table>
     </div>
-    <div class="panel-body" ng-hide="backtestJobPositions.PositionSecurities.length">
+    <div class="panel-body" ng-hide="backtestJobPositions[backtestJobPositions.length - 1].PositionSecurities.length">
         <p>No position for this job</p>
     </div>
 </div>

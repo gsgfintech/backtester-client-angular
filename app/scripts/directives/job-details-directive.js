@@ -17,8 +17,13 @@ angular.module('backtesterclientApp')
             backtestJobName: '=name',
             backtestJobOrders: '=orders'
         },
-        templateUrl: 'views/job-orders-template.html'
-    };
+        templateUrl: 'views/job-orders-template.html',
+        controller: ['$scope', 'JobsService', function ($scope, JobsService) {
+            $scope.showOrderDetails = function (orderId) {
+                JobsService.showOrderDetails($scope.backtestJobName, orderId);
+            };
+        }]
+};
 }])
 .directive('jobTrades', [function () {
     return {
@@ -27,7 +32,12 @@ angular.module('backtesterclientApp')
             backtestJobName: '=name',
             backtestJobTrades: '=trades'
         },
-        templateUrl: 'views/job-trades-template.html'
+        templateUrl: 'views/job-trades-template.html',
+        controller: ['$scope', 'JobsService', function ($scope, JobsService) {
+            $scope.showTradeDetails = function (tradeId) {
+                JobsService.showTradeDetails($scope.backtestJobName, tradeId);
+            };
+        }]
     };
 }])
 .directive('jobPositions', [function () {
@@ -47,6 +57,11 @@ angular.module('backtesterclientApp')
             backtestJobName: '=name',
             backtestJobAlerts: '=alerts'
         },
-        templateUrl: 'views/job-alerts-template.html'
-    };
+        templateUrl: 'views/job-alerts-template.html',
+        controller: ['$scope', 'JobsService', function ($scope, JobsService) {
+            $scope.showAlertDetails = function (alertId) {
+                JobsService.showAlertDetails($scope.backtestJobName, alertId);
+            };
+        }]
+};
 }]);

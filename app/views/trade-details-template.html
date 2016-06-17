@@ -1,0 +1,54 @@
+<table class="table">
+    <tr>
+        <td><label>Trade ID</label></td>
+        <td>{{backtestTrade.TradeId}}</td>
+    </tr>
+    <tr>
+        <td><label>Order ID</label></td>
+        <td>{{backtestTrade.OrderId}}</td>
+    </tr>
+    <tr>
+        <td><label>Execution Time</label></td>
+        <td>{{backtestTrade.Timestamp | date:'dd/MM/yy HH:mm:ss Z'}}</td>
+    </tr>
+    <tr>
+        <td><label>Side</label></td>
+        <td>{{backtestTrade.Side}}</td>
+    </tr>
+    <tr>
+        <td><label>Cross</label></td>
+        <td>{{backtestTrade.Cross}}</td>
+    </tr>
+    <tr>
+        <td><label>Quantity</label></td>
+        <td>{{backtestTrade.Size | number}}</td>
+    </tr>
+    <tr>
+        <td><label>Price</label></td>
+        <td>{{backtestTrade.Price | number:5}}</td>
+    </tr>
+    <tr>
+        <td><label>PnL</label></td>
+        <td ng-class="[{'bg-success': backtestTrade.RealizedPnL > 0}, {'bg-danger': backtestTrade.RealizedPnL < 0}]">
+            <span ng-show="backtestTrade.RealizedPnL">
+                {{backtestTrade.RealizedPnlUsd | number:2}} USD
+                <small>
+                    (<span ng-hide="backtestTrade.Cross.split('/')[1] === 'USD'">{{backtestTrade.RealizedPnL | number:2}} {{backtestTrade.Cross.split('/')[1]}} / </span>
+                    {{backtestTrade.RealizedPnlPips | number:2}} pips)
+                </small>
+            </span>
+        </td>
+    </tr>
+    <tr>
+        <td><label>Commission</label></td>
+        <td>{{backtestTrade.CommissionUsd | number:2}} USD</td>
+    </tr>
+    <tr>
+        <td><label>Duration</label></td>
+        <td>{{backtestTrade.Duration}}</td>
+    </tr>
+    <tr>
+        <td><label>Trade String</label></td>
+        <td>{{backtestTrade.Side}} {{backtestTrade.Size | number}} {{backtestTrade.Cross}} @ {{backtestTrade.Price | number:5}} <small>({{backtestTrade.Timestamp | date:'dd/MM/yy HH:mm:ss Z'}})</small></td>
+    </tr>
+</table>

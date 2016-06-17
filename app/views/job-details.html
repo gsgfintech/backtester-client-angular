@@ -1,5 +1,5 @@
 <div class="row">
-    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+    <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
         <uib-tabset active="jobDetailsCtrl.activeTabIndex">
             <uib-tab heading="Info" select="jobDetailsCtrl.updateLocation('info')">
                 <job-details job="jobDetailsCtrl.job"></job-details>
@@ -26,5 +26,43 @@
                 <job-positions name="jobDetailsCtrl.job.Name" positions="jobDetailsCtrl.job.Output.Positions"></job-positions>
             </uib-tab>
         </uib-tabset>
+    </div>
+    <div class="col-lg-3 col-md-3 hidden-sm hidden-xs">
+        <div class="panel panel-default">
+            <div class="panel-heading">Pending Jobs</div>
+            <div class="panel-body">
+                <ul class="list-group">
+                    <li class="list-group-item text-overflow" ng-repeat="job in jobDetailsCtrl.activeJobs | filter:{Status:'CREATED'}">
+                        <a href="#/jobs/{{job.Name}}/info" ng-hide="job.Name === jobDetailsCtrl.jobName">{{job.Name}}</a>
+                        <strong ng-show="job.Name === jobDetailsCtrl.jobName">{{job.Name}}</strong>
+                    </li>
+                </ul>
+                <a class="btn btn-link" ui-sref="jobs"><span class="glyphicon glyphicon-arrow-left"></span> Back to Jobs List</a>
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">Jobs In Progress</div>
+            <div class="panel-body">
+                <ul class="list-group">
+                    <li class="list-group-item text-overflow" ng-repeat="job in jobDetailsCtrl.activeJobs | filter:{Status:'INPROGRESS'}">
+                        <a href="#/jobs/{{job.Name}}/info" ng-hide="job.Name === jobDetailsCtrl.jobName">{{job.Name}}</a>
+                        <strong ng-show="job.Name === jobDetailsCtrl.jobName">{{job.Name}}</strong>
+                    </li>
+                </ul>
+                <a class="btn btn-link" ui-sref="jobs"><span class="glyphicon glyphicon-arrow-left"></span> Back to Jobs List</a>
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">Jobs Completed</div>
+            <div class="panel-body">
+                <ul class="list-group">
+                    <li class="list-group-item text-overflow" ng-repeat="job in jobDetailsCtrl.inactiveJobs | filter:{Status:'COMPLETED'}">
+                        <a href="#/jobs/{{job.Name}}/info" ng-hide="job.Name === jobDetailsCtrl.jobName">{{job.Name}}</a>
+                        <strong ng-show="job.Name === jobDetailsCtrl.jobName">{{job.Name}}</strong>
+                    </li>
+                </ul>
+                <a class="btn btn-link" ui-sref="jobs"><span class="glyphicon glyphicon-arrow-left"></span> Back to Jobs List</a>
+            </div>
+        </div>
     </div>
 </div>

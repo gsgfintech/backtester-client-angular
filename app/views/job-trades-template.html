@@ -15,7 +15,7 @@
                 <th>Duration</th>
                 <th>Fees (USD)</th>
             </tr>
-            <tr ng-repeat="trade in backtestJobTrades">
+            <tr ng-repeat="trade in backtestJobTrades" ng-click="showTradeDetails(trade.TradeId)">
                 <td>{{trade.Timestamp | date:'dd/MM/yy HH:mm:ss'}}</td>
                 <td>{{trade.Side}}</td>
                 <td>{{trade.Size}}</td>

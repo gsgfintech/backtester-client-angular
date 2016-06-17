@@ -1,0 +1,38 @@
+<table class="table">
+    <tr>
+        <td><label>Alert ID</label></td>
+        <td>{{backtestAlert.AlertId}}</td>
+    </tr>
+    <tr>
+        <td><label>Opened</label></td>
+        <td>{{backtestAlert.Timestamp | date:'dd/MM/yy HH:mm:ss Z'}}</td>
+    </tr>
+    <tr ng-show="backtestAlert.ClosedTimestamp">
+        <td><label>Closed</label></td>
+        <td>{{backtestAlert.ClosedTimestamp | date:'dd/MM/yy HH:mm:ss Z'}}</td>
+    </tr>
+    <tr ng-show="backtestAlert.Level">
+        <td><label>Level</label></td>
+        <td>{{backtestAlert.Level}}</td>
+    </tr>
+    <tr ng-show="backtestAlert.Status">
+        <td><label>Status</label></td>
+        <td>{{backtestAlert.Status}}</td>
+    </tr>
+    <tr ng-show="backtestAlert.Source">
+        <td><label>Source</label></td>
+        <td>{{backtestAlert.Source}}</td>
+    </tr>
+    <tr ng-show="backtestAlert.Subject">
+        <td><label>Subject</label></td>
+        <td>{{backtestAlert.Subject}}</td>
+    </tr>
+    <tr ng-show="backtestAlert.Body">
+        <td><label>Content</label></td>
+        <td>{{backtestAlert.Body}}</td>
+    </tr>
+    <tr ng-show="backtestAlert.ActionUrl">
+        <td><label>Action</label></td>
+        <td>{{backtestAlert.ActionUrl}}</td>
+    </tr>
+</table>

@@ -20,6 +20,21 @@ angular.module('backtesterclientApp', ['ngAnimate', 'ngCookies', 'ngFileUpload',
         controller: 'JobDetailsCtrl',
         controllerAs: 'jobDetailsCtrl',
         url: '/jobs/:jobName/:activeTab'
+    }).state('order-details', {
+        templateUrl: 'views/order-details-view.html',
+        controller: 'OrderDetailsCtrl',
+        controllerAs: 'orderDetailsCtrl',
+        url: '/jobs/:jobName/orders/view/:orderId'
+    }).state('trade-details', {
+        templateUrl: 'views/trade-details-view.html',
+        controller: 'TradeDetailsCtrl',
+        controllerAs: 'tradeDetailsCtrl',
+        url: '/jobs/:jobName/trades/view/:tradeId'
+    }).state('alert-details', {
+        templateUrl: 'views/alert-details-view.html',
+        controller: 'AlertDetailsCtrl',
+        controllerAs: 'alertDetailsCtrl',
+        url: '/jobs/:jobName/alerts/view/:alertId'
     }).state('workers', {
         templateUrl: 'views/backtester-workers.html',
         controller: 'BacktesterWorkersCtrl',

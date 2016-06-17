@@ -17,6 +17,8 @@ angular.module('backtesterclientApp')
 }])
 .factory('JobsService', ['$rootScope', '$uibModal', 'CommonsService', 'JobsByNameWebService', 'JobsByStatusWebService', 'serverEndpoint', 'Upload', function ($rootScope, $uibModal, CommonsService, JobsByNameWebService, JobsByStatusWebService, serverEndpoint, Upload) {
 
+    var jobsLoaded = false;
+
     var activeJobs = [];
     var inactiveJobs = [];
 
@@ -46,6 +48,8 @@ angular.module('backtesterclientApp')
                 populateJobs(newInactiveJobs, inactiveJobs);
             });
         });
+
+        jobsLoaded = true;
     }
 
     function handleDbActionResult(result) {
@@ -56,21 +60,19 @@ angular.module('backtesterclientApp')
         // 1. Look in active jobs
         var job = findJob(activeJobs, jobName);
 
-        if (job) {
-            cb(job);
-        }
-
         // 2. Look in inactive jobs
-        job = findJob(inactiveJobs, jobName);
+        if (!job) {
+            job = findJob(inactiveJobs, jobName);
+        }
 
         if (job) {
             cb(job);
+        } else {
+            // 3. Finally try to get it from the database
+            JobsByNameWebService.get({ jobName: jobName }, function (job) {
+                cb(job);
+            });
         }
-
-        // 3. Finally try to get it from the database
-        JobsByNameWebService.get({ jobName: jobName }, function (job) {
-            cb(job);
-        });
     }
 
     function showJobDetails(jobName) {
@@ -83,6 +85,108 @@ angular.module('backtesterclientApp')
                 resolve: {
                     job: function () {
                         return job;
+                    }
+                }
+            });
+        });
+    }
+
+    function getTrade(jobName, tradeId, cb) {
+        getJobByName(jobName, function (job) {
+            var trade = null;
+
+            if (job) {
+                for (var i = 0; i < job.Output.Trades.length; i++) {
+                    if (job.Output.Trades[i].TradeId === tradeId) {
+                        trade = job.Output.Trades[i];
+                    }
+                }
+            }
+
+            cb(trade);
+        });
+    }
+
+    function showTradeDetails(jobName, tradeId) {
+        getTrade(jobName, tradeId, function (trade) {
+            $uibModal.open({
+                templateUrl: 'views/trade-details-popup.html',
+                controller: 'TradeDetailsPopupCtrl',
+                controllerAs: 'tradeDetailsCtrl',
+                resolve: {
+                    jobName: function () {
+                        return jobName;
+                    },
+                    trade: function () {
+                        return trade;
+                    }
+                }
+            });
+        });
+    }
+
+    function getOrder(jobName, orderId, cb) {
+        getJobByName(jobName, function (job) {
+            var order = null;
+
+            if (job) {
+                for (var i = 0; i < job.Output.Orders.length; i++) {
+                    if (job.Output.Orders[i].OrderId === orderId) {
+                        order = job.Output.Orders[i];
+                    }
+                }
+            }
+
+            cb(order);
+        });
+    }
+
+    function showOrderDetails(jobName, orderId) {
+        getOrder(jobName, orderId, function (order) {
+            $uibModal.open({
+                templateUrl: 'views/order-details-popup.html',
+                controller: 'OrderDetailsPopupCtrl',
+                controllerAs: 'orderDetailsCtrl',
+                resolve: {
+                    jobName: function () {
+                        return jobName;
+                    },
+                    order: function () {
+                        return order;
+                    }
+                }
+            });
+        });
+    }
+
+    function getAlert(jobName, alertId, cb) {
+        getJobByName(jobName, function (job) {
+            var alert = null;
+
+            if (job) {
+                for (var i = 0; i < job.Output.Alerts.length; i++) {
+                    if (job.Output.Alerts[i].AlertId === alertId) {
+                        alert = job.Output.Alerts[i];
+                    }
+                }
+            }
+
+            cb(alert);
+        });
+    }
+
+    function showAlertDetails(jobName, alertId) {
+        getAlert(jobName, alertId, function (alert) {
+            $uibModal.open({
+                templateUrl: 'views/alert-details-popup.html',
+                controller: 'AlertDetailsPopupCtrl',
+                controllerAs: 'alertDetailsCtrl',
+                resolve: {
+                    jobName: function () {
+                        return jobName;
+                    },
+                    alert: function () {
+                        return alert;
                     }
                 }
             });
@@ -149,16 +253,25 @@ angular.module('backtesterclientApp')
     }
 
     function getActiveJobs() {
+        if (!jobsLoaded) {
+            loadJobs();
+        }
+
         return activeJobs;
     }
 
     function getInactiveJobs() {
+        if (!jobsLoaded) {
+            loadJobs();
+        }
+
         return inactiveJobs;
     }
 
     // Event listeners
     $rootScope.$on('reloadJobRequestedEvent', function () {
         loadJobs();
+        $rootScope.$broadcast('jobsService.jobUpdatedEvent', { jobName: 'all' });
     });
 
     $rootScope.$on('newAlertReceivedEvent', function (event, data) {
@@ -166,7 +279,7 @@ angular.module('backtesterclientApp')
 
         if (job) {
             job.Output.Alerts.push(data.alert);
-            $rootScope.$apply();
+            $rootScope.$broadcast('jobsService.jobUpdatedEvent', { jobName: data.jobName });
         }
     });
 
@@ -175,7 +288,7 @@ angular.module('backtesterclientApp')
 
         if (job) {
             job.Output.Trades.push(data.execution);
-            $rootScope.$apply();
+            $rootScope.$broadcast('jobsService.jobUpdatedEvent', { jobName: data.jobName });
         }
     });
 
@@ -184,7 +297,7 @@ angular.module('backtesterclientApp')
 
         if (job) {
             job.Output.Orders.push(data.order);
-            $rootScope.$apply();
+            $rootScope.$broadcast('jobsService.jobUpdatedEvent', { jobName: data.jobName });
         }
     });
 
@@ -193,7 +306,7 @@ angular.module('backtesterclientApp')
 
         if (job) {
             job.Output.Positions.push(data.position);
-            $rootScope.$apply();
+            $rootScope.$broadcast('jobsService.jobUpdatedEvent', { jobName: data.jobName });
         }
     });
 
@@ -201,10 +314,16 @@ angular.module('backtesterclientApp')
         createJob: createJob,
         deleteJob: deleteJob,
         getActiveJobs: getActiveJobs,
+        getAlert: getAlert,
         getInactiveJobs: getInactiveJobs,
         getJobByName: getJobByName,
+        getOrder: getOrder,
+        getTrade: getTrade,
         loadJobs: loadJobs,
+        showAlertDetails: showAlertDetails,
         showJobDetails: showJobDetails,
+        showOrderDetails: showOrderDetails,
+        showTradeDetails: showTradeDetails,
         uploadStratDllFile: uploadStratDllFile
     };
 

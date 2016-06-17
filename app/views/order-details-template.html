@@ -1,0 +1,58 @@
+<table class="table">
+    <tr>
+        <td><label>Order ID</label></td>
+        <td>{{backtestOrder.OrderId}}</td>
+    </tr>
+    <tr>
+        <td><label>Placed Time</label></td>
+        <td>{{backtestOrder.PlacedTime | date:'dd/MM/yy HH:mm:ss Z'}}</td>
+    </tr>
+    <tr>
+        <td><label>Last Update Time</label></td>
+        <td>{{backtestOrder.LastUpdateTime | date:'dd/MM/yy HH:mm:ss Z'}}</td>
+    </tr>
+    <tr>
+        <td><label>Status</label></td>
+        <td>{{backtestOrder.Status}}</td>
+    </tr>
+    <tr>
+        <td><label>Type</label></td>
+        <td>{{backtestOrder.Type}}</td>
+    </tr>
+    <tr>
+        <td><label>Side</label></td>
+        <td>{{backtestOrder.Side}}</td>
+    </tr>
+    <tr>
+        <td><label>Pair</label></td>
+        <td>{{backtestOrder.Cross}}</td>
+    </tr>
+    <tr>
+        <td><label>Quantity</label></td>
+        <td>{{backtestOrder.Quantity | number}}</td>
+    </tr>
+    <tr>
+        <td><label>Limit Price</label></td>
+        <td>{{backtestOrder.LimitPrice | number:5}}</td>
+    </tr>
+    <tr>
+        <td><label>Stop Price</label></td>
+        <td>{{backtestOrder.StopPrice | number:5}}</td>
+    </tr>
+    <tr>
+        <td><label>Trailing Amount</label></td>
+        <td>{{backtestOrder.TrailingAmount | number:5}}</td>
+    </tr>
+    <tr>
+        <td><label>Fill Price</label></td>
+        <td>{{backtestOrder.FillPrice | number:5}}</td>
+    </tr>
+    <tr>
+        <td><label>History</label></td>
+        <td></td>
+    </tr>
+    <tr ng-repeat="historyPoint in backtestOrder.History">
+        <td>{{historyPoint.Timestamp | date:'dd/MM/yy HH:mm:ss Z'}}</td>
+        <td>{{historyPoint.Status}}</td>
+    </tr>
+</table>

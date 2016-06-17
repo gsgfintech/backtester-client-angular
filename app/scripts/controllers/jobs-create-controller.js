@@ -76,6 +76,7 @@ angular.module('backtesterclientApp')
         self.backtestJobSettings.Parameters = angular.copy(self.fileUploadResult.Parameters);
         self.backtestJobSettings.StrategyName = self.fileUploadResult.StrategyName;
         self.backtestJobSettings.StrategyVersion = self.fileUploadResult.StrategyVersion;
+        self.backtestJobSettings.StrategyClass = self.fileUploadResult.StrategyClass;
         self.backtestJobSettings.Crosses = self.fileUploadResult.Crosses;
 
         self.currentStep = 2;
