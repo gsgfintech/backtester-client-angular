@@ -45,6 +45,17 @@
                                         <td>Class</td>
                                         <td>{{jobsCtrl.fileUploadResult.AlgorithmClass}}</td>
                                     </tr>
+                                    <tr>
+                                        <th colspan="2">DLL</th>
+                                    </tr>
+                                    <tr>
+                                        <td>Original File Name</td>
+                                        <td>{{jobsCtrl.fileToUpload.name}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>New File Path</td>
+                                        <td>{{jobsCtrl.fileUploadResult.NewFileName}}</td>
+                                    </tr>
                                 </table>
                             </div>
                             <div class="panel panel-danger" ng-show="jobsCtrl.fileUploadResult.Success == false">

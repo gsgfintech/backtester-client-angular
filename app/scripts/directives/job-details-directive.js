@@ -7,8 +7,13 @@ angular.module('backtesterclientApp')
         scope: {
             backtestJob: '=job'
         },
-        templateUrl: 'views/job-details-template.html'
-    };
+        templateUrl: 'views/job-details-template.html',
+        controller: ['$scope', function ($scope) {
+            $scope.formatParamName = function (name) {
+                return name.replace('Param', '');
+            };
+        }]
+};
 }])
 .directive('jobOrders', [function () {
     return {

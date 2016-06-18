@@ -72,7 +72,8 @@ angular.module('backtesterclientApp')
     };
 
     self.submitStep1 = function () {
-        self.backtestJobSettings.FileName = self.fileToUpload.name;
+        self.backtestJobSettings.OriginalFileName = self.fileToUpload.name;
+        self.backtestJobSettings.NewFileName = self.fileUploadResult.NewFileName;
         self.backtestJobSettings.Parameters = angular.copy(self.fileUploadResult.Parameters);
         self.backtestJobSettings.StrategyName = self.fileUploadResult.StrategyName;
         self.backtestJobSettings.StrategyVersion = self.fileUploadResult.StrategyVersion;
