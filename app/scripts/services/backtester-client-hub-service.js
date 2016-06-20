@@ -10,17 +10,24 @@ angular.module('backtesterclientApp')
         listeners: {
 
             // Alerts
-            'newAlertReceived': function (jobName, alert) {
-                console.log('Received alert update for', jobName);
+            'newAlertReceived': function (jobName, day, alert) {
+                console.log('Received alert update for', jobName, day);
 
-                $rootScope.$broadcast('newAlertReceivedEvent', { jobName: jobName, alert: alert });
+                $rootScope.$broadcast('newAlertReceivedEvent', { jobName: jobName, day: day, alert: alert });
+            },
+
+            // Backtest Status
+            'newBacktestStatusReceived': function (jobName, day, status) {
+                console.log('Received backtest status update for', jobName, day);
+
+                $rootScope.$broadcast('newBacktestStatusReceivedEvent', { jobName: jobName, day: day, status: status });
             },
 
             // Executions
-            'newExecutionReceived': function (jobName, execution) {
-                console.log('Received trade update for', jobName);
+            'newExecutionReceived': function (jobName, day, execution) {
+                console.log('Received trade update for', jobName, day);
 
-                $rootScope.$broadcast('newExecutionReceivedEvent', { jobName: jobName, execution: execution });
+                $rootScope.$broadcast('newExecutionReceivedEvent', { jobName: jobName, day: day, execution: execution });
             },
 
             // Jobs
@@ -31,17 +38,17 @@ angular.module('backtesterclientApp')
             },
 
             // Order
-            'orderUpdateReceived': function (jobName, order) {
-                console.log('Received order update for', jobName);
+            'orderUpdateReceived': function (jobName, day, order) {
+                console.log('Received order update for', jobName, day);
 
-                $rootScope.$broadcast('orderUpdateReceivedEvent', { jobName: jobName, order: order });
+                $rootScope.$broadcast('orderUpdateReceivedEvent', { jobName: jobName, day: day, order: order });
             },
 
             // Positions
-            'newPositionReceived': function (jobName, position) {
-                console.log('Received position update for', jobName);
+            'newPositionReceived': function (jobName, day, position) {
+                console.log('Received position update for', jobName, day);
 
-                $rootScope.$broadcast('newPositionReceivedEvent', { jobName: jobName, position: position });
+                $rootScope.$broadcast('newPositionReceivedEvent', { jobName: jobName, day: day, position: position });
             },
 
             // Status Updates

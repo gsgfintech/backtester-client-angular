@@ -32,6 +32,16 @@ angular.module('backtesterclientApp')
         return null;
     }
 
+    function findOutputIndexByDay(job, day) {
+        for (var i = 0; i < job.Output.length; i++) {
+            if (job.Output[i].Day === day) {
+                return i;
+            }
+        }
+
+        return -1;
+    }
+
     function populateJobs(jobsReceived, jobsToPopulate) {
         jobsToPopulate.splice(0, jobsToPopulate.length);
 
@@ -278,17 +288,38 @@ angular.module('backtesterclientApp')
         var job = findJob(activeJobs, data.jobName);
 
         if (job) {
-            job.Output.Alerts.push(data.alert);
-            $rootScope.$broadcast('jobsService.jobUpdatedEvent', { jobName: data.jobName });
+            var outputIndex = findOutputIndexByDay(job, data.day);
+
+            if (outputIndex > -1) {
+                job.Output[outputIndex].Alerts.push(data.alert);
+                $rootScope.$broadcast('jobsService.jobUpdatedEvent', { jobName: data.jobName });
+            }
         }
     });
 
-    $rootScope.$on('newExecutionReceivedEvent', function (event, data) {
+    $rootScope.$on('newBacktestStatusReceivedEvent', function (event, data) {
         var job = findJob(activeJobs, data.jobName);
 
         if (job) {
-            job.Output.Trades.push(data.execution);
-            $rootScope.$broadcast('jobsService.jobUpdatedEvent', { jobName: data.jobName });
+            var outputIndex = findOutputIndexByDay(job, data.day);
+
+            if (outputIndex > -1) {
+                job.Output[outputIndex].Status = data.status;
+                $rootScope.$broadcast('jobsService.jobUpdatedEvent', { jobName: data.jobName });
+            }
+        }
+    });
+
+    $rootScope.$on('newBacktestStatusReceivedEvent', function (event, data) {
+        var job = findJob(activeJobs, data.jobName);
+
+        if (job) {
+            var outputIndex = findOutputIndexByDay(job, data.day);
+
+            if (outputIndex > -1) {
+                job.Output[outputIndex].Trades.push(data.execution);
+                $rootScope.$broadcast('jobsService.jobUpdatedEvent', { jobName: data.jobName });
+            }
         }
     });
 
@@ -296,8 +327,12 @@ angular.module('backtesterclientApp')
         var job = findJob(activeJobs, data.jobName);
 
         if (job) {
-            job.Output.Orders.push(data.order);
-            $rootScope.$broadcast('jobsService.jobUpdatedEvent', { jobName: data.jobName });
+            var outputIndex = findOutputIndexByDay(job, data.day);
+
+            if (outputIndex > -1) {
+                job.Output[outputIndex].Orders.push(data.order);
+                $rootScope.$broadcast('jobsService.jobUpdatedEvent', { jobName: data.jobName });
+            }
         }
     });
 
@@ -305,8 +340,12 @@ angular.module('backtesterclientApp')
         var job = findJob(activeJobs, data.jobName);
 
         if (job) {
-            job.Output.Positions.push(data.position);
-            $rootScope.$broadcast('jobsService.jobUpdatedEvent', { jobName: data.jobName });
+            var outputIndex = findOutputIndexByDay(job, data.day);
+
+            if (outputIndex > -1) {
+                job.Output[outputIndex].Positions.push(data.position);
+                $rootScope.$broadcast('jobsService.jobUpdatedEvent', { jobName: data.jobName });
+            }
         }
     });
 

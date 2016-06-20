@@ -20,6 +20,7 @@ angular.module('backtesterclientApp')
         restrict: 'E',
         scope: {
             backtestJobName: '=name',
+            backtestJobDay: '=day',
             backtestJobOrders: '=orders'
         },
         templateUrl: 'views/job-orders-template.html',
@@ -35,6 +36,7 @@ angular.module('backtesterclientApp')
         restrict: 'E',
         scope: {
             backtestJobName: '=name',
+            backtestJobDay: '=day',
             backtestJobTrades: '=trades'
         },
         templateUrl: 'views/job-trades-template.html',
@@ -50,6 +52,7 @@ angular.module('backtesterclientApp')
         restrict: 'E',
         scope: {
             backtestJobName: '=name',
+            backtestJobDay: '=day',
             backtestJobPositions: '=positions'
         },
         templateUrl: 'views/job-positions-template.html'
@@ -60,6 +63,7 @@ angular.module('backtesterclientApp')
         restrict: 'E',
         scope: {
             backtestJobName: '=name',
+            backtestJobDay: '=day',
             backtestJobAlerts: '=alerts'
         },
         templateUrl: 'views/job-alerts-template.html',
