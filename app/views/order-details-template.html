@@ -4,16 +4,18 @@
         <td>{{backtestOrder.OrderId}}</td>
     </tr>
     <tr>
-        <td><label>Placed Time</label></td>
-        <td>{{backtestOrder.PlacedTime | date:'dd/MM/yy HH:mm:ss Z'}}</td>
+        <td><label>Placed Time (HKT)</label></td>
+        <td>{{backtestOrder.PlacedTime | date:'dd/MM/yy HH:mm:ss'}}</td>
     </tr>
     <tr>
-        <td><label>Last Update Time</label></td>
-        <td>{{backtestOrder.LastUpdateTime | date:'dd/MM/yy HH:mm:ss Z'}}</td>
+        <td><label>Last Update Time (HKT)</label></td>
+        <td>{{backtestOrder.LastUpdateTime | date:'dd/MM/yy HH:mm:ss'}}</td>
     </tr>
     <tr>
         <td><label>Status</label></td>
-        <td>{{backtestOrder.Status}}</td>
+        <td ng-class="[{'success': backtestOrder.Status == 'Filled'}, {'danger': backtestOrder.Status == 'Cancelled'}]">
+            {{backtestOrder.Status}}
+        </td>
     </tr>
     <tr>
         <td><label>Type</label></td>
@@ -28,8 +30,12 @@
         <td>{{backtestOrder.Cross}}</td>
     </tr>
     <tr>
+        <td><label>Origin</label></td>
+        <td>{{backtestOrder.Origin}}</td>
+    </tr>
+    <tr>
         <td><label>Quantity</label></td>
-        <td>{{backtestOrder.Quantity | number}}</td>
+        <td>{{backtestOrder.Quantity / 1000 | number}}K</td>
     </tr>
     <tr>
         <td><label>Limit Price</label></td>

@@ -4,7 +4,7 @@
     </div>
     <div class="table-responsive" ng-show="backtestJobAlerts.length">
         <table class="table table-hover">
-            <tr ng-repeat="alert in backtestJobAlerts" ng-click="showAlertDetails(alert.AlertId)"  
+            <tr ng-repeat="alert in backtestJobAlerts | orderBy:'-Timestamp'" ng-click="showAlertDetails(alert.AlertId)"  
                 ng-class="[{'danger': alert.Level === 'ERROR' || alert.Level === 'FATAL'}, 
                 {'warning': alert.Level === 'WARNING'},
                 {'info': alert.Level === 'INFO' || alert.Level === 'DEBUG'}]">

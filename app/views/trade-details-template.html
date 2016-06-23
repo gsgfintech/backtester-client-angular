@@ -12,6 +12,10 @@
         <td>{{backtestTrade.Timestamp | date:'dd/MM/yy HH:mm:ss Z'}}</td>
     </tr>
     <tr>
+        <td><label>Origin</label></td>
+        <td>{{backtestTrade.OrderOrigin}}</td>
+    </tr>
+    <tr>
         <td><label>Side</label></td>
         <td>{{backtestTrade.Side}}</td>
     </tr>
@@ -49,6 +53,6 @@
     </tr>
     <tr>
         <td><label>Trade String</label></td>
-        <td>{{backtestTrade.Side}} {{backtestTrade.Size | number}} {{backtestTrade.Cross}} @ {{backtestTrade.Price | number:5}} <small>({{backtestTrade.Timestamp | date:'dd/MM/yy HH:mm:ss Z'}})</small></td>
+        <td>{{backtestTrade.Side}} {{backtestTrade.Size / 1000 | number}}K {{backtestTrade.Cross}} @ {{backtestTrade.Price | number:5}} <small>({{backtestTrade.Timestamp | date:'dd/MM/yy HH:mm:ss Z'}})</small></td>
     </tr>
 </table>

@@ -13,7 +13,7 @@ angular.module('backtesterclientApp')
                 return name.replace('Param', '');
             };
         }]
-};
+    };
 }])
 .directive('jobOrders', [function () {
     return {
@@ -24,12 +24,28 @@ angular.module('backtesterclientApp')
             backtestJobOrders: '=orders'
         },
         templateUrl: 'views/job-orders-template.html',
-        controller: ['$scope', 'JobsService', function ($scope, JobsService) {
+        controller: ['$scope', 'CommonsService', 'JobsService', function ($scope, CommonsService, JobsService) {
+            $scope.formatRate = function (cross, rate) {
+                return CommonsService.formatRate(cross, rate);
+            };
+
+            $scope.shortenOrigin = function (origin) {
+                return CommonsService.shortenOrigin(origin);
+            };
+
+            $scope.shortenStatus = function (status) {
+                return CommonsService.shortenStatus(status);
+            };
+
+            $scope.shortenType = function (type) {
+                return CommonsService.shortenType(type);
+            };
+
             $scope.showOrderDetails = function (orderId) {
-                JobsService.showOrderDetails($scope.backtestJobName, orderId);
+                JobsService.showOrderDetails($scope.backtestJobName, $scope.backtestJobDay, orderId);
             };
         }]
-};
+    };
 }])
 .directive('jobTrades', [function () {
     return {
@@ -40,9 +56,13 @@ angular.module('backtesterclientApp')
             backtestJobTrades: '=trades'
         },
         templateUrl: 'views/job-trades-template.html',
-        controller: ['$scope', 'JobsService', function ($scope, JobsService) {
+        controller: ['$scope', 'CommonsService', 'JobsService', function ($scope, CommonsService, JobsService) {
+            $scope.formatRate = function (cross, rate) {
+                return CommonsService.formatRate(cross, rate);
+            };
+
             $scope.showTradeDetails = function (tradeId) {
-                JobsService.showTradeDetails($scope.backtestJobName, tradeId);
+                JobsService.showTradeDetails($scope.backtestJobName, $scope.backtestJobDay, tradeId);
             };
         }]
     };
@@ -69,8 +89,8 @@ angular.module('backtesterclientApp')
         templateUrl: 'views/job-alerts-template.html',
         controller: ['$scope', 'JobsService', function ($scope, JobsService) {
             $scope.showAlertDetails = function (alertId) {
-                JobsService.showAlertDetails($scope.backtestJobName, alertId);
+                JobsService.showAlertDetails($scope.backtestJobName, $scope.backtestJobDay, alertId);
             };
         }]
-};
+    };
 }]);

@@ -42,6 +42,16 @@ angular.module('backtesterclientApp')
         return -1;
     }
 
+    function findDayOutput(job, day) {
+        for (var i = 0; i < job.Output.length; i++) {
+            if (job.Output[i].Day === day) {
+                return job.Output[i];
+            }
+        }
+
+        return null;
+    }
+
     function populateJobs(jobsReceived, jobsToPopulate) {
         jobsToPopulate.splice(0, jobsToPopulate.length);
 
@@ -101,14 +111,18 @@ angular.module('backtesterclientApp')
         });
     }
 
-    function getTrade(jobName, tradeId, cb) {
+    function getTrade(jobName, day, tradeId, cb) {
         getJobByName(jobName, function (job) {
             var trade = null;
 
             if (job) {
-                for (var i = 0; i < job.Output.Trades.length; i++) {
-                    if (job.Output.Trades[i].TradeId === tradeId) {
-                        trade = job.Output.Trades[i];
+                var dayOutput = findDayOutput(job, day);
+
+                if (dayOutput) {
+                    for (var i = 0; i < dayOutput.Trades.length; i++) {
+                        if (dayOutput.Trades[i].TradeId === tradeId) {
+                            trade = dayOutput.Trades[i];
+                        }
                     }
                 }
             }
@@ -117,8 +131,18 @@ angular.module('backtesterclientApp')
         });
     }
 
-    function showTradeDetails(jobName, tradeId) {
-        getTrade(jobName, tradeId, function (trade) {
+    function findTradeIndex(output, tradeId) {
+        for (var i = 0; i < output.Trades.length; i++) {
+            if (output.Trades[i].TradeId === tradeId) {
+                return i;
+            }
+        }
+
+        return -1;
+    }
+
+    function showTradeDetails(jobName, day, tradeId) {
+        getTrade(jobName, day, tradeId, function (trade) {
             $uibModal.open({
                 templateUrl: 'views/trade-details-popup.html',
                 controller: 'TradeDetailsPopupCtrl',
@@ -135,14 +159,18 @@ angular.module('backtesterclientApp')
         });
     }
 
-    function getOrder(jobName, orderId, cb) {
+    function getOrder(jobName, day, orderId, cb) {
         getJobByName(jobName, function (job) {
             var order = null;
 
             if (job) {
-                for (var i = 0; i < job.Output.Orders.length; i++) {
-                    if (job.Output.Orders[i].OrderId === orderId) {
-                        order = job.Output.Orders[i];
+                var dayOutput = findDayOutput(job, day);
+
+                if (dayOutput) {
+                    for (var i = 0; i < dayOutput.Orders.length; i++) {
+                        if (dayOutput.Orders[i].OrderId === orderId) {
+                            order = dayOutput.Orders[i];
+                        }
                     }
                 }
             }
@@ -151,8 +179,18 @@ angular.module('backtesterclientApp')
         });
     }
 
-    function showOrderDetails(jobName, orderId) {
-        getOrder(jobName, orderId, function (order) {
+    function findOrderIndex(output, orderId) {
+        for (var i = 0; i < output.Orders.length; i++) {
+            if (output.Orders[i].OrderId === orderId) {
+                return i;
+            }
+        }
+
+        return -1;
+    }
+
+    function showOrderDetails(jobName, day, orderId) {
+        getOrder(jobName, day, orderId, function (order) {
             $uibModal.open({
                 templateUrl: 'views/order-details-popup.html',
                 controller: 'OrderDetailsPopupCtrl',
@@ -169,14 +207,18 @@ angular.module('backtesterclientApp')
         });
     }
 
-    function getAlert(jobName, alertId, cb) {
+    function getAlert(jobName, day, alertId, cb) {
         getJobByName(jobName, function (job) {
             var alert = null;
 
             if (job) {
-                for (var i = 0; i < job.Output.Alerts.length; i++) {
-                    if (job.Output.Alerts[i].AlertId === alertId) {
-                        alert = job.Output.Alerts[i];
+                var dayOutput = findDayOutput(job, day);
+
+                if (dayOutput) {
+                    for (var i = 0; i < dayOutput.Alerts.length; i++) {
+                        if (dayOutput.Alerts[i].AlertId === alertId) {
+                            alert = dayOutput.Alerts[i];
+                        }
                     }
                 }
             }
@@ -185,8 +227,8 @@ angular.module('backtesterclientApp')
         });
     }
 
-    function showAlertDetails(jobName, alertId) {
-        getAlert(jobName, alertId, function (alert) {
+    function showAlertDetails(jobName, day, alertId) {
+        getAlert(jobName, day, alertId, function (alert) {
             $uibModal.open({
                 templateUrl: 'views/alert-details-popup.html',
                 controller: 'AlertDetailsPopupCtrl',
@@ -310,14 +352,21 @@ angular.module('backtesterclientApp')
         }
     });
 
-    $rootScope.$on('newBacktestStatusReceivedEvent', function (event, data) {
+    $rootScope.$on('newExecutionReceivedEvent', function (event, data) {
         var job = findJob(activeJobs, data.jobName);
 
         if (job) {
-            var outputIndex = findOutputIndexByDay(job, data.day);
+            var output = findDayOutput(job, data.day);
 
-            if (outputIndex > -1) {
-                job.Output[outputIndex].Trades.push(data.execution);
+            if (output) {
+                var tradeIndex = findTradeIndex(output, data.execution.TradeId);
+
+                if (tradeIndex > -1) {
+                    output.Trades[tradeIndex] = data.execution;
+                } else {
+                    output.Trades.push(data.execution);
+                }
+
                 $rootScope.$broadcast('jobsService.jobUpdatedEvent', { jobName: data.jobName });
             }
         }
@@ -327,10 +376,17 @@ angular.module('backtesterclientApp')
         var job = findJob(activeJobs, data.jobName);
 
         if (job) {
-            var outputIndex = findOutputIndexByDay(job, data.day);
+            var output = findDayOutput(job, data.day);
 
-            if (outputIndex > -1) {
-                job.Output[outputIndex].Orders.push(data.order);
+            if (output) {
+                var orderIndex = findOrderIndex(output, data.order.OrderId);
+
+                if (orderIndex > -1) {
+                    output.Orders[orderIndex] = data.order;
+                } else {
+                    output.Orders.push(data.order);
+                }
+
                 $rootScope.$broadcast('jobsService.jobUpdatedEvent', { jobName: data.jobName });
             }
         }

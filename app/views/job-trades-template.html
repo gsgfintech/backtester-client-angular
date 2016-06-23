@@ -6,6 +6,7 @@
         <table class="table table-hover">
             <tr>
                 <th>Exec Time (HKT)</th>
+                <th>Origin</th>
                 <th>Side</th>
                 <th>Quantity</th>
                 <th>Pair</th>
@@ -15,14 +16,15 @@
                 <th>Duration</th>
                 <th>Fees (USD)</th>
             </tr>
-            <tr ng-repeat="trade in backtestJobTrades" ng-click="showTradeDetails(trade.TradeId)">
+            <tr ng-repeat="trade in backtestJobTrades | orderBy:'-Timestamp'" ng-click="showTradeDetails(trade.TradeId)">
                 <td>{{trade.Timestamp | date:'dd/MM/yy HH:mm:ss'}}</td>
+                <td>{{trade.OrderOrigin}}</td>
                 <td>{{trade.Side}}</td>
-                <td>{{trade.Size}}</td>
+                <td>{{trade.Size / 1000 | number}}K</td>
                 <td>{{trade.Cross}}</td>
-                <td>{{trade.Price}}</td>
-                <td>{{trade.RealizedPnlUsd}}</td>
-                <td>{{trade.RealizedPnlPips}}</td>
+                <td>{{formatRate(trade.Cross, trade.Price)}}</td>
+                <td ng-class="[{'bg-success': trade.RealizedPnlUsd > 0}, {'bg-danger': trade.RealizedPnlUsd < 0}]">{{trade.RealizedPnlUsd | number:2}}</td>
+                <td ng-class="[{'bg-success': trade.RealizedPnlPips > 0}, {'bg-danger': trade.RealizedPnlPips < 0}]">{{trade.RealizedPnlPips}}</td>
                 <td>{{trade.Duration}}</td>
                 <td>{{trade.CommissionUsd}}</td>
             </tr>

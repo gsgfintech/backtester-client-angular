@@ -10,7 +10,10 @@
             </tr>
             <tr>
                 <th>Status</th>
-                <td>{{backtestJob.Status}}</td>
+                <td>
+                    {{backtestJob.Status}}
+                    <span ng-show="{{backtestJob.Progress}}"> ({{backtestJob.Progress | number:0}}%)</span>
+                </td>
             </tr>
             <tr>
                 <th>Worker</th>

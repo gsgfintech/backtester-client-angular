@@ -1,0 +1,30 @@
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h4>Status</h4>
+    </div>
+    <table class="table">
+        <tr>
+            <th>Progress</th>
+            <td>{{backtestStatus.Progress | number:0}}%</td>
+        </tr>
+        <tr>
+            <th>Message</th>
+            <td>{{backtestStatus.Message}}</td>
+        </tr>
+        <tr>
+            <th>Current Time</th>
+            <td>{{backtestStatus.Timestamp | date:'dd/MM/yyyy HH:mm:ss'}} (HKT)</td>
+        </tr>
+    </table>
+</div>
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h4>Attributes</h4>
+    </div>
+    <table class="table">
+        <tr ng-repeat="attr in backtestStatus.Attributes | orderBy:'Name'">
+            <th>{{attr.Name}}</th>
+            <td>{{attr.Value}}</td>
+        </tr>
+    </table>
+</div>
