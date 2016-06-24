@@ -7,18 +7,38 @@
             <tr>
                 <th>Cross</th>
                 <th>Quantity</th>
-                <th>UPnL (USD)</th>
-                <th>RPnL (USD)</th>
+                <th>PnL (USD)</th>
             </tr>
             <tr ng-repeat="position in backtestJobPositions[backtestJobPositions.length - 1].PositionSecurities | orderBy:'Cross'">
                 <td>{{position.Cross}}</td>
                 <td ng-class="[{'bg-success': position.PositionQuantity > 0}, {'bg-danger': position.PositionQuantity < 0}]">{{position.PositionQuantity / 1000 | number}}<span ng-show="position.PositionQuantity !== 0">K</span></td>
-                <td ng-class="[{'bg-success': position.UnrealizedPnlUsd > 0}, {'bg-danger': position.UnrealizedPnlUsd < 0}]"><span ng-show="position.UnrealizedPnlUsd !== 0">{{position.UnrealizedPnlUsd | number:2}}</span></td>
                 <td ng-class="[{'bg-success': position.RealizedPnlUsd > 0}, {'bg-danger': position.RealizedPnlUsd < 0}]">{{position.RealizedPnlUsd | number:2}}</td>
             </tr>
         </table>
     </div>
     <div class="panel-body" ng-hide="backtestJobPositions[backtestJobPositions.length - 1].PositionSecurities.length">
         <p>No position for this job</p>
+    </div>
+</div>
+<div class="panel panel-default" ng-repeat="(key, value) in positionsByCross">
+    <div class="panel-heading">
+        <h4>{{key}}</h4>
+    </div>
+    <div class="panel-body">
+        <div job-positions-chart day="backtestJobDay" name="backtestJobName" data="value" height="300px"></div>
+        <div class="table-responsive" style="max-height: 400px;overflow-y: scroll;">
+            <table class="table">
+                <tr>
+                    <th>Timestamp (HKT)</th>
+                    <th>Position</th>
+                    <th>Cumulative PnL (USD)</th>
+                </tr>
+                <tr ng-repeat="point in value | orderBy:'timestamp'">
+                    <td>{{point.timestamp | date:'dd/MM/yyyy HH:mm:ss'}}</td>
+                    <td>{{point.quantity / 1000 | number:0}}K</td>
+                    <td>{{point.cumulativePnl | number:0}}</td>
+                </tr>
+            </table>
+        </div>
     </div>
 </div>

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('backtesterclientApp')
-.controller('JobsCreateCtrl', ['$uibModalInstance', 'JobsService', function ($uibModalInstance, JobsService) {
+.controller('JobsCreateCtrl', ['$uibModalInstance', 'CommonsService', 'JobsService', function ($uibModalInstance, CommonsService, JobsService) {
 
     var self = this;
 
@@ -31,7 +31,7 @@ angular.module('backtesterclientApp')
     self.lowerBoundTime.setMinutes(30);
     self.lowerBoundTime.setSeconds(0);
     self.lowerBoundTime.setMilliseconds(0);
-    
+
     self.upperBoundTime = new Date();
     self.upperBoundTime.setHours(4);
     self.upperBoundTime.setMinutes(30);
@@ -74,7 +74,15 @@ angular.module('backtesterclientApp')
     self.submitStep1 = function () {
         self.backtestJobSettings.OriginalFileName = self.fileToUpload.name;
         self.backtestJobSettings.NewFileName = self.fileUploadResult.NewFileName;
-        self.backtestJobSettings.Parameters = angular.copy(self.fileUploadResult.Parameters);
+
+        self.backtestJobSettings.Parameters = self.fileUploadResult.Parameters.map(function (param) {
+            return {
+                Name: param.Name,
+                Type: param.Type,
+                Value: param.DefaultValue
+            };
+        });
+
         self.backtestJobSettings.StrategyName = self.fileUploadResult.StrategyName;
         self.backtestJobSettings.StrategyVersion = self.fileUploadResult.StrategyVersion;
         self.backtestJobSettings.StrategyClass = self.fileUploadResult.StrategyClass;

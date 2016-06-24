@@ -30,7 +30,7 @@ angular.module('backtesterclientApp')
         }
     };
 
-    function setJob() {
+    function setJob(cb) {
         JobsService.getJobByName(self.jobName, function (job) {
             self.job = job;
 
@@ -41,6 +41,10 @@ angular.module('backtesterclientApp')
             }
 
             findActiveTabIndex();
+
+            if (cb) {
+                cb();
+            }
         });
     }
 
@@ -62,7 +66,9 @@ angular.module('backtesterclientApp')
     // Event handlers
     $rootScope.$on('jobsService.jobUpdatedEvent', function (event, data) {
         if (data.jobName === self.jobName || data.jobName === 'all') {
-            setJob();
+            setJob(function () {
+                $rootScope.$broadcast('jobPositionsChart.refresh', { jobName: data.jobName });
+            });
         }
     });
 

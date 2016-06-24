@@ -67,17 +67,6 @@ angular.module('backtesterclientApp')
         }]
     };
 }])
-.directive('jobPositions', [function () {
-    return {
-        restrict: 'E',
-        scope: {
-            backtestJobName: '=name',
-            backtestJobDay: '=day',
-            backtestJobPositions: '=positions'
-        },
-        templateUrl: 'views/job-positions-template.html'
-    };
-}])
 .directive('jobAlerts', [function () {
     return {
         restrict: 'E',

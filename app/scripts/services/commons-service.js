@@ -39,6 +39,19 @@ angular.module('backtesterclientApp')
         }
     }
 
+    function parseBool(value) {
+        value = value.toLowerCase();
+
+        if (value === 'true') {
+            return true;
+        } else if (value === 'false') {
+            return false;
+        } else {
+            console.error('Unable to parse value', value, 'as a boolean');
+            return null;
+        }
+    }
+
     function shortenOrigin(origin) {
         if (origin === 'PositionOpen') {
             return 'PO';
@@ -63,7 +76,7 @@ angular.module('backtesterclientApp')
 
     function shortenSide(side) {
         return side.substring(0, 1);
-    };
+    }
 
     function shortenType(type) {
         if (!type) {
@@ -79,7 +92,7 @@ angular.module('backtesterclientApp')
         } else {
             return type;
         }
-    };
+    }
 
     function shortenStatus(status) {
         if (!status) {
@@ -93,11 +106,12 @@ angular.module('backtesterclientApp')
         } else {
             return status;
         }
-    };
+    }
 
     return {
         formatRate: formatRate,
         handleDbActionResult: handleDbActionResult,
+        parseBool: parseBool,
         shortenOrigin: shortenOrigin,
         shortenSide: shortenSide,
         shortenStatus: shortenStatus,
