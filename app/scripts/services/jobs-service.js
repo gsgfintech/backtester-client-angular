@@ -15,12 +15,31 @@ angular.module('backtesterclientApp')
         status: '@Status'
     });
 }])
-.factory('JobsService', ['$rootScope', '$uibModal', 'CommonsService', 'JobsByNameWebService', 'JobsByStatusWebService', 'serverEndpoint', 'Upload', function ($rootScope, $uibModal, CommonsService, JobsByNameWebService, JobsByStatusWebService, serverEndpoint, Upload) {
+.factory('JobsStratsNamesWebService', ['$resource', 'serverEndpoint', function ($resource, serverEndpoint) {
+    var address = serverEndpoint + 'api/jobs/strats/names';
+
+    return $resource(address, {});
+}])
+.factory('JobsStratsVersionsWebService', ['$resource', 'serverEndpoint', function ($resource, serverEndpoint) {
+    var address = serverEndpoint + 'api/jobs/strats/versions/:stratName';
+
+    return $resource(address, {
+        stratName: '@StratName'
+    });
+}])
+.factory('JobsSearchWebService', ['$resource', 'serverEndpoint', function ($resource, serverEndpoint) {
+    var address = serverEndpoint + 'api/jobs/search';
+
+    return $resource(address, {});
+}])
+.factory('JobsService', ['$rootScope', '$uibModal', 'CommonsService', 'JobsByNameWebService', 'JobsByStatusWebService', 'JobsSearchWebService', 'serverEndpoint', 'Upload', function ($rootScope, $uibModal, CommonsService, JobsByNameWebService, JobsByStatusWebService, JobsSearchWebService, serverEndpoint, Upload) {
 
     var jobsLoaded = false;
 
     var activeJobs = [];
     var inactiveJobs = [];
+    var searchResults = [];
+    var otherUnclassifiedJobs = [];
 
     function findJob(array, jobName) {
         for (var i = 0; i < array.length; i++) {
@@ -85,11 +104,23 @@ angular.module('backtesterclientApp')
             job = findJob(inactiveJobs, jobName);
         }
 
+        // 3. Look in search results
+        if (!job) {
+            job = findJob(searchResults, jobName);
+        }
+
+        // 4. Look in unclassified jobs
+        if (!job) {
+            job = findJob(otherUnclassifiedJobs, jobName);
+        }
+
         if (job) {
             cb(job);
         } else {
             // 3. Finally try to get it from the database
             JobsByNameWebService.get({ jobName: jobName }, function (job) {
+                otherUnclassifiedJobs.push(job);
+
                 cb(job);
             });
         }
@@ -320,6 +351,28 @@ angular.module('backtesterclientApp')
         return inactiveJobs;
     }
 
+    function getSearchResults() {
+        return searchResults;
+    }
+
+    function search(jobName, stratName, stratVersion, rangeStart, rangeEnd, cb) {
+        JobsSearchWebService.save({
+            JobName: jobName,
+            StratName: stratName,
+            StratVersion: stratVersion,
+            RangeStart: rangeStart,
+            RangeEnd: rangeEnd
+        }, function (response) {
+            if (response && response.jobs) {
+                searchResults = response.jobs;
+            }
+
+            if (cb) {
+                cb();
+            }
+        });
+    }
+
     // Event listeners
     $rootScope.$on('reloadJobRequestedEvent', function () {
         loadJobs();
@@ -411,10 +464,12 @@ angular.module('backtesterclientApp')
         getActiveJobs: getActiveJobs,
         getAlert: getAlert,
         getInactiveJobs: getInactiveJobs,
+        getSearchResults: getSearchResults,
         getJobByName: getJobByName,
         getOrder: getOrder,
         getTrade: getTrade,
         loadJobs: loadJobs,
+        search: search,
         showAlertDetails: showAlertDetails,
         showJobDetails: showJobDetails,
         showOrderDetails: showOrderDetails,

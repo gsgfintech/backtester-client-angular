@@ -29,14 +29,14 @@
                     <span class="icon-bar"></span>
                 </button>
 
-                <a class="navbar-brand" href="#/">
+                <a class="navbar-brand" href="#/jobs">
                     <img src="images/LogoGSG_300x893_transparent_bg.png" />
                 </a>
             </div>
             <div class="collapse navbar-collapse" id="js-navbar-collapse">
                 <ul class="nav navbar-nav">
-                    <li ui-sref-active="active"><a ui-sref="home">Home</a></li>
                     <li ui-sref-active="active"><a ui-sref="jobs">Jobs</a></li>
+                    <li ui-sref-active="active"><a ui-sref="search">Jobs Search</a></li>
                     <li ui-sref-active="active"><a ui-sref="workers">Workers</a></li>
                 </ul>
             </div>
@@ -107,6 +107,8 @@
     <script src="scripts/directives/job-day-details-directive.js"></script>
     <script src="scripts/directives/job-details-positions-directive.js"></script>
     <script src="scripts/directives/job-details-positions-chart-directive.js"></script>
+    <script src="scripts/directives/jobs-list-directive.js"></script>
+    <script src="scripts/controllers/job-search-controller.js"></script>
     <!-- endbuild -->
     <script src="bower_components/amcharts3/amcharts/amcharts.js"></script>
     <script src="bower_components/amcharts3/amcharts/serial.js"></script>

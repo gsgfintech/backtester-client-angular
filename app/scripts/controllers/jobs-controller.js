@@ -5,6 +5,8 @@ angular.module('backtesterclientApp')
 
     var self = this;
 
+    self.activeJobsPanelTitle = 'Active Jobs';
+
     function loadJobs() {
         JobsService.loadJobs();
     }
@@ -12,20 +14,12 @@ angular.module('backtesterclientApp')
     self.activeJobs = JobsService.getActiveJobs();
     self.inactiveJobs = JobsService.getInactiveJobs();
 
-    self.showJobDetails = function (jobName) {
-        JobsService.showJobDetails(jobName);
-    };
-
     self.showWorkerDetails = function (name) {
         BacktesterWorkersService.showWorkerDetails(name);
     };
 
     self.createJob = function () {
         JobsService.createJob();
-    };
-
-    self.deleteJob = function (jobName) {
-        JobsService.deleteJob(jobName);
     };
 
     loadJobs();

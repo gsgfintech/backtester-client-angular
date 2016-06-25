@@ -5,12 +5,7 @@ angular.module('backtesterclientApp', ['ngAnimate', 'ngCookies', 'ngFileUpload',
 .constant('serverEndpoint', 'http://localhost:53855/')
 .constant('systemsServiceEndpoint', 'https://tryphon.gsg.capital:6582/')
 .config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $urlRouterProvider) {
-    $stateProvider.state('home', {
-        templateUrl: 'views/main.html',
-        controller: 'MainCtrl',
-        controllerAs: 'mainCtrl',
-        url: '/'
-    }).state('jobs', {
+    $stateProvider.state('jobs', {
         templateUrl: 'views/jobs.html',
         controller: 'JobsCtrl',
         controllerAs: 'jobsCtrl',
@@ -35,6 +30,11 @@ angular.module('backtesterclientApp', ['ngAnimate', 'ngCookies', 'ngFileUpload',
         controller: 'AlertDetailsCtrl',
         controllerAs: 'alertDetailsCtrl',
         url: '/jobs/:jobName/alerts/view/:alertId'
+    }).state('search', {
+        templateUrl: 'views/job-search.html',
+        controller: 'JobSearchCtrl',
+        controllerAs: 'jobSearchCtrl',
+        url: '/search/'
     }).state('workers', {
         templateUrl: 'views/backtester-workers.html',
         controller: 'BacktesterWorkersCtrl',
@@ -47,5 +47,5 @@ angular.module('backtesterclientApp', ['ngAnimate', 'ngCookies', 'ngFileUpload',
         url: '/workers/:workerName'
     });
 
-    $urlRouterProvider.otherwise('/');
+    $urlRouterProvider.otherwise('/jobs');
 }]);

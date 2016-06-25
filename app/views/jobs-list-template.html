@@ -1,0 +1,35 @@
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h4>{{header}}</h4>
+    </div>
+    <div class="table-responsive" ng-show="backtestJobs.length">
+        <table class="table table-hover">
+            <tr>
+                <th>Name</th>
+                <th>Created (HKT)</th>
+                <th>Status</th>
+                <th>Start Time (HKT)</th>
+                <th>Worker</th>
+                <th></th>
+            </tr>
+            <tr ng-repeat="job in backtestJobs">
+                <td>
+                    <a href="#/jobs/{{job.Name}}/info">{{job.Name}}</a>
+                    <span class="badge btn" ng-click="showJobDetails(job.Name)">Info</span>
+                </td>
+                <td>{{job.CreateTime | date:'dd/MM/yy HH:mm:ss'}}</td>
+                <td>{{job.Status}}</td>
+                <td>{{job.ActualStartTime | date:'dd/MM/yy HH:mm:ss'}}</td>
+                <td><a href ng-click="showWorkerDetails(job.Worker)">{{job.Worker}}</a></td>
+                <td>
+                    <button class="btn btn-danger btn-xs" ng-click="deleteJob(job.Name)">
+                        <span class="glyphicon glyphicon-remove-sign"></span>
+                    </button>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div class="panel-body" ng-hide="backtestJobs.length">
+        <p>No job</p>
+    </div>
+</div>
