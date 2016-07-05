@@ -74,7 +74,8 @@ angular.module('backtesterclientApp')
                         title: 'PnL',
                         valueAxis: 'pnlAxis',
                         valueField: 'cumulativePnl',
-                        dashLengthField: 'dashLengthLine'
+                        lineColor: '#00B200',
+                        negativeLineColor: '#FF0000',
                     }],
                     categoryField: 'timestamp',
                     categoryAxis: {

@@ -38,6 +38,7 @@ module.exports = function(config) {
       'bower_components/angular-signalr-hub/signalr-hub.js',
       'bower_components/ng-file-upload/ng-file-upload.js',
       'bower_components/angular-ui-switch/angular-ui-switch.js',
+      'bower_components/amcharts3/amcharts/amcharts.js',
       'bower_components/angular-mocks/angular-mocks.js',
       // endbower
       "app/scripts/**/*.js",
