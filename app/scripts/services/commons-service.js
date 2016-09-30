@@ -55,6 +55,8 @@ angular.module('backtesterclientApp')
     function shortenOrigin(origin) {
         if (origin === 'PositionOpen') {
             return 'PO';
+        } else if (origin === 'PositionDouble') {
+            return 'PD';
         } else if (origin === 'PositionClose') {
             return 'PC';
         } else if (origin === 'PositionClose_ContStop') {
