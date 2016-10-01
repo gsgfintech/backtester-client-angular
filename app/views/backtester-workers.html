@@ -16,10 +16,10 @@
                     </tr>
                     <tr ng-repeat="worker in backtesterWorkersCtrl.workers | orderBy:'Name'">
                         <th><a href ng-click="backtesterWorkersCtrl.showWorkerDetails(worker.Name)">{{worker.Name}}</a></th>
-                        <td ng-class="[{'bg-success': worker.IsAcceptingJobs}, {'bg-danger': !worker.IsAcceptingJobs}]">
+                        <td ng-class="[{'bg-success': worker.status.isAcceptingJobs}, {'bg-danger': !worker.status.isAcceptingJobs}]">
                             <div class="btn-group btn-group-xs">
-                                <button class="btn btn-success" ng-disabled="worker.IsAcceptingJobs" ng-click="backtesterWorkersCtrl.workerAcceptJobs(worker.Name)">Yes</button>
-                                <button class="btn btn-danger" ng-disabled="!worker.IsAcceptingJobs" ng-click="backtesterWorkersCtrl.workerRejectJobs(worker.Name)">No</button>
+                                <button class="btn btn-success" ng-disabled="worker.status.isAcceptingJobs" ng-click="backtesterWorkersCtrl.workerAcceptJobs(worker.Name)">Yes</button>
+                                <button class="btn btn-danger" ng-disabled="!worker.status.isAcceptingJobs" ng-click="backtesterWorkersCtrl.workerRejectJobs(worker.Name)">No</button>
                             </div>
                         </td>
                         <td><a href ng-click="backtesterWorkersCtrl.showJobDetails(worker.CurrentJob)">{{worker.CurrentJob}}</a></td>

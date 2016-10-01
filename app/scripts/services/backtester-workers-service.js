@@ -325,6 +325,15 @@ angular.module('backtesterclientApp')
         var index = findWorkerIndexByName(status.Name);
 
         if (index > -1) {
+            if (status.Attributes) {
+                for (var i = 0; i < status.Attributes.length; i++) {
+                    if (status.Attributes[i].Name === 'IsAcceptingJobs') {
+                        status.isAcceptingJobs = status.Attributes[i].Value;
+                    }
+                }
+            }
+
+
             workers[index].status = status;
         } else {
             console.error('Ignoring status update of unknown worker', status.Name);
