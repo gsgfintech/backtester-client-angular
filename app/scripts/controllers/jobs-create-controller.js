@@ -78,6 +78,7 @@ angular.module('backtesterclientApp')
         self.backtestJobSettings.Parameters = self.fileUploadResult.Parameters.map(function (param) {
             return {
                 Name: param.Name,
+                Tooltip: param.Tooltip,
                 Type: param.Type,
                 Value: param.DefaultValue
             };

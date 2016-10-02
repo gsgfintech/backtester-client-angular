@@ -87,7 +87,14 @@
                     <div class="form-group" ng-repeat="param in jobsCtrl.backtestJobSettings.Parameters | orderBy:'Name'">
                         <div ng-switch on="param.Type">
                             <!-- Not checkbox -->
-                            <label class="control-label col-sm-6" for="param-{{param.Name}}" ng-hide="param.Type === 'Boolean'">{{param.Name}}</label>
+                            <label class="control-label col-sm-6" for="param-{{param.Name}}" ng-hide="param.Type === 'Boolean'">
+                                {{param.Name}}
+                                <span ng-show="param.Tooltip">
+                                    <br /><small>
+                                        <i>({{param.Tooltip}})</i>
+                                    </small>
+                                </span>
+                            </label>
 
                             <div class="col-sm-6">
                                 <!-- Integer -->
