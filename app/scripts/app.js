@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('backtesterclientApp', ['ngAnimate', 'ngCookies', 'ngFileUpload', 'ngResource', 'ngRoute', 'ngSanitize', 'ngTouch', 'SignalR', 'toaster', 'ui.router', 'ui.bootstrap', 'uiSwitch'])
-//.constant('serverEndpoint', 'https://backtest.gsg.capital:10100/')
-.constant('serverEndpoint', 'http://localhost:53855/')
+.constant('serverEndpoint', 'https://backtest.gsg.capital:10100/')
+//.constant('serverEndpoint', 'http://localhost:53855/')
 .constant('systemsServiceEndpoint', 'https://tryphon.gsg.capital:6582/')
 .config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $urlRouterProvider) {
     $stateProvider.state('jobs', {
