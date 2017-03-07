@@ -7,8 +7,8 @@
             <uib-tab heading="All Trades">
                 <job-all-trades trades="jobDetailsCtrl.allTrades"></job-all-trades>
             </uib-tab>
-            <uib-tab heading="Unr PnLs">
-                <div>TODO</div>
+            <uib-tab heading="Unr PnLs" ng-show="jobDetailsCtrl.allUnrealizedPnlSeries">
+                <job-unrealized-pnls name="jobDetailsCtrl.jobName" pnls="jobDetailsCtrl.allUnrealizedPnlSeries"></job-unrealized-pnls>
             </uib-tab>
             <uib-tab ng-repeat="output in jobDetailsCtrl.job.Output" select="jobDetailsCtrl.updateLocation(output.Day)" active="jobDetailsCtrl.activeSubTabIndex">
                 <uib-tab-heading>

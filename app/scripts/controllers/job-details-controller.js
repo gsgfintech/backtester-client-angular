@@ -10,6 +10,7 @@ angular.module('backtesterclientApp')
     self.jobName = $stateParams.jobName;
 
     self.allTrades = [];
+    self.allUnrealizedPnlSeries = [];
 
     var tabs = ['info', 'trades', 'unrpnls'];
     var subTabs = ['status', 'alerts', 'orders', 'trades', 'positions'];
@@ -41,11 +42,23 @@ angular.module('backtesterclientApp')
                     return output.Day;
                 }));
 
+                self.allTrades = [];
+
                 for (var i = 0; i < job.Output.length; i++) {
                     for (var j = 0; j < job.Output[i].Trades.length; j++) {
                         self.allTrades.push(job.Output[i].Trades[j]);
                     }
                 }
+            }
+
+            if (job && job.UnrealizedPnlSeries) {
+                self.allUnrealizedPnlSeries = [];
+
+                for (var i = 0; i < job.UnrealizedPnlSeries.length; i++) {
+                    self.allUnrealizedPnlSeries.push(job.UnrealizedPnlSeries[i]);
+                }
+
+                $rootScope.$broadcast('jobUnrealizedPnlsChart.refresh', { jobName: self.jobName, pnlSeries: self.allUnrealizedPnlSeries });
             }
 
             findActiveTabIndex();

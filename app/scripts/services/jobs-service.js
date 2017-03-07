@@ -317,16 +317,16 @@ angular.module('backtesterclientApp')
 
     function cloneJob(jobName) {
         getJobByName(jobName, function (job) {
-           if (job) {
+            if (job) {
                 job.Strategy.beginDate = new Date(job.BeginDate);
                 job.Strategy.endDate = new Date(job.EndDate);
                 job.Strategy.beginTime = new Date(job.BeginTime);
                 job.Strategy.endTime = new Date(job.EndTime);
 
-               createJob(job.Strategy);
-           } else {
-               console.error('Failed to load details of job ', jobName);
-           } 
+                createJob(job.Strategy);
+            } else {
+                console.error('Failed to load details of job ', jobName);
+            }
         });
     }
 
@@ -389,6 +389,20 @@ angular.module('backtesterclientApp')
 
             if (cb) {
                 cb();
+            }
+        });
+    }
+
+    function getUnrealizedPnlSeries(jobName, err, cb) {
+        getJobByName(jobName, function (job) {
+            if (job) {
+                if (cb) {
+                    cb(job.UnrealizedPnlSeries);
+                }
+            } else {
+                if (err) {
+                    err('Failed to get job ' + jobName);
+                }
             }
         });
     }
@@ -489,6 +503,7 @@ angular.module('backtesterclientApp')
         getJobByName: getJobByName,
         getOrder: getOrder,
         getTrade: getTrade,
+        getUnrealizedPnlSeries: getUnrealizedPnlSeries,
         loadJobs: loadJobs,
         search: search,
         showAlertDetails: showAlertDetails,

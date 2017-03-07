@@ -1,0 +1,12 @@
+﻿<div class="panel panel-default">
+    <div class="panel-heading">
+        <h4>Unrealized Pnl Series <small>{{backtestJobName}}</small></h4>
+    </div>
+    <!--<div class="panel-body" ng-hide="backtestJobUnrealizedPnls[backtestJobUnrealizedPnls.length - 1]">
+        <p>No unrealized pnls serie for this job</p>
+    </div>-->
+    <!--<div class="panel-body" ng-show="backtestJobUnrealizedPnls[backtestJobUnrealizedPnls.length - 1]">-->
+    <div class="panel-body" ng-show="backtestJobUnrealizedPnls[backtestJobUnrealizedPnls.length - 1]">
+        <div job-unrealized-pnls-chart name="backtestJobName" data="backtestJobUnrealizedPnls" height="600px"></div>
+    </div>
+</div>
