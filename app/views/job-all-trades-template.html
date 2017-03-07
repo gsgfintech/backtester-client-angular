@@ -1,0 +1,14 @@
+﻿<div class="panel panel-default">
+    <div class="panel-heading">
+        <h4>
+            <button class="btn" ngclipboard data-clipboard-target="trades-list"><span class="glyphicon glyphicon-copy"></span></button>
+            All Trades
+        </h4>
+    </div>
+    <div class="table-responsive" ng-show="backtestJobAllTrades.length">
+        <trades-list trades="backtestJobAllTrades"></trades-list>
+    </div>
+    <div class="panel-body" ng-hide="backtestJobAllTrades.length">
+        <p>No trade for this job</p>
+    </div>
+</div>

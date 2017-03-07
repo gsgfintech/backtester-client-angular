@@ -9,7 +9,9 @@ angular.module('backtesterclientApp')
 
     self.jobName = $stateParams.jobName;
 
-    var tabs = ['info'];
+    self.allTrades = [];
+
+    var tabs = ['info', 'trades', 'unrpnls'];
     var subTabs = ['status', 'alerts', 'orders', 'trades', 'positions'];
 
     function findActiveTabIndex() {
@@ -35,9 +37,15 @@ angular.module('backtesterclientApp')
             self.job = job;
 
             if (job && job.Output) {
-                tabs = ['info'].concat(job.Output.map(function (output) {
+                tabs = ['info', 'trades', 'unrpnls'].concat(job.Output.map(function (output) {
                     return output.Day;
                 }));
+
+                for (var i = 0; i < job.Output.length; i++) {
+                    for (var j = 0; j < job.Output[i].Trades.length; j++) {
+                        self.allTrades.push(job.Output[i].Trades[j]);
+                    }
+                }
             }
 
             findActiveTabIndex();

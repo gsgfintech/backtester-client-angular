@@ -4,6 +4,12 @@
             <uib-tab heading="Info" select="jobDetailsCtrl.updateLocation('info')">
                 <job-details job="jobDetailsCtrl.job"></job-details>
             </uib-tab>
+            <uib-tab heading="All Trades">
+                <job-all-trades trades="jobDetailsCtrl.allTrades"></job-all-trades>
+            </uib-tab>
+            <uib-tab heading="Unr PnLs">
+                <div>TODO</div>
+            </uib-tab>
             <uib-tab ng-repeat="output in jobDetailsCtrl.job.Output" select="jobDetailsCtrl.updateLocation(output.Day)" active="jobDetailsCtrl.activeSubTabIndex">
                 <uib-tab-heading>
                     {{output.Day}} <span class="badge" ng-show="output.Status.Progress">{{output.Status.Progress | number:0}} %</span>
