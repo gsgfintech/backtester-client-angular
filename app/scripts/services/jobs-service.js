@@ -297,16 +297,36 @@ angular.module('backtesterclientApp')
         }
     }
 
-    function createJob() {
+    function createJob(existingStrategyDetails) {
         var modalInstance = $uibModal.open({
             templateUrl: 'views/jobs-create-popup.html',
             controller: 'JobsCreateCtrl',
             controllerAs: 'jobsCtrl',
-            size: 'lg'
+            size: 'lg',
+            resolve: {
+                existingStrategyDetails: function () {
+                    return existingStrategyDetails;
+                }
+            }
         });
 
         modalInstance.result.then(function (newJobSettings) {
             JobsByNameWebService.save(newJobSettings, handleDbActionResult);
+        });
+    }
+
+    function cloneJob(jobName) {
+        getJobByName(jobName, function (job) {
+           if (job) {
+                job.Strategy.beginDate = new Date(job.BeginDate);
+                job.Strategy.endDate = new Date(job.EndDate);
+                job.Strategy.beginTime = new Date(job.BeginTime);
+                job.Strategy.endTime = new Date(job.EndTime);
+
+               createJob(job.Strategy);
+           } else {
+               console.error('Failed to load details of job ', jobName);
+           } 
         });
     }
 
@@ -459,6 +479,7 @@ angular.module('backtesterclientApp')
     });
 
     return {
+        cloneJob: cloneJob,
         createJob: createJob,
         deleteJob: deleteJob,
         getActiveJobs: getActiveJobs,

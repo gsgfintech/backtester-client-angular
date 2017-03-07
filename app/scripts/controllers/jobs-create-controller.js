@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('backtesterclientApp')
-.controller('JobsCreateCtrl', ['$uibModalInstance', 'CommonsService', 'JobsService', function ($uibModalInstance, CommonsService, JobsService) {
+.controller('JobsCreateCtrl', ['$uibModalInstance', 'CommonsService', 'JobsService', 'existingStrategyDetails', function ($uibModalInstance, CommonsService, JobsService, existingStrategyDetails) {
 
     var self = this;
 
@@ -21,20 +21,29 @@ angular.module('backtesterclientApp')
 
     self.fileUploadResult = null;
 
-    self.lowerBoundDate = new Date();
-    self.lowerBoundDate.setDate(self.lowerBoundDate.getDate() - 1);
+    // Time boundaries
+    if (existingStrategyDetails) {
+        self.lowerBoundDate = existingStrategyDetails.beginDate;
+        self.upperBoundDate = existingStrategyDetails.endDate;
+        self.lowerBoundTime = existingStrategyDetails.beginTime;
+        self.upperBoundTime = existingStrategyDetails.endTime;
+    } else {
+        self.lowerBoundDate = new Date();
+        self.lowerBoundDate.setDate(self.lowerBoundDate.getDate() - 1);
 
-    self.upperBoundDate = new Date();
+        self.upperBoundDate = new Date();
 
-    self.lowerBoundTime = new Date();
-    self.lowerBoundTime.setHours(5);
-    self.lowerBoundTime.setMinutes(30);
+        self.lowerBoundTime = new Date();
+        self.lowerBoundTime.setHours(5);
+        self.lowerBoundTime.setMinutes(30);
+
+        self.upperBoundTime = new Date();
+        self.upperBoundTime.setHours(4);
+        self.upperBoundTime.setMinutes(30);
+    }
+
     self.lowerBoundTime.setSeconds(0);
     self.lowerBoundTime.setMilliseconds(0);
-
-    self.upperBoundTime = new Date();
-    self.upperBoundTime.setHours(4);
-    self.upperBoundTime.setMinutes(30);
     self.upperBoundTime.setSeconds(0);
     self.upperBoundTime.setMilliseconds(0);
 
@@ -49,6 +58,23 @@ angular.module('backtesterclientApp')
     self.upperBoundDateOpen = false;
 
     self.backtestJobSettings = {};
+
+    if (existingStrategyDetails) {
+        self.fileToUpload = {
+            name: existingStrategyDetails.DllPath
+        };
+
+        self.fileUploadResult = {
+            Crosses: existingStrategyDetails.Crosses,
+            NewFileName: existingStrategyDetails.DllPath,
+            StrategyName: existingStrategyDetails.Name,
+            StrategyVersion: existingStrategyDetails.Version,
+            StrategyClass: existingStrategyDetails.TypeName,
+            Success: true
+        };
+
+        self.canUpload = false;
+    }
 
     self.upload = function (file, errFiles) {
         self.canUpload = false;
@@ -71,18 +97,37 @@ angular.module('backtesterclientApp')
         self.canUpload = true;
     };
 
+    function mapValue(type, value) {
+        if (type === 'Int32' || type === 'Double') {
+            return Number(value);
+        } else {
+            return value;
+        }
+    }
+
     self.submitStep1 = function () {
         self.backtestJobSettings.OriginalFileName = self.fileToUpload.name;
         self.backtestJobSettings.NewFileName = self.fileUploadResult.NewFileName;
 
-        self.backtestJobSettings.Parameters = self.fileUploadResult.Parameters.map(function (param) {
-            return {
-                Name: param.Name,
-                Tooltip: param.Tooltip,
-                Type: param.Type,
-                Value: param.DefaultValue
-            };
-        });
+        if (existingStrategyDetails) {
+            self.backtestJobSettings.Parameters = existingStrategyDetails.Parameters.map(function (param) {
+                return {
+                    Name: param.Name,
+                    Tooltip: param.Tooltip,
+                    Type: param.Type,
+                    Value: mapValue(param.Type, param.Value)
+                };
+            });
+        } else {
+            self.backtestJobSettings.Parameters = self.fileUploadResult.Parameters.map(function (param) {
+                return {
+                    Name: param.Name,
+                    Tooltip: param.Tooltip,
+                    Type: param.Type,
+                    Value: param.DefaultValue
+                };
+            });
+        }
 
         self.backtestJobSettings.StrategyName = self.fileUploadResult.StrategyName;
         self.backtestJobSettings.StrategyVersion = self.fileUploadResult.StrategyVersion;

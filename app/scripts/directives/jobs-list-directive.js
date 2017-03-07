@@ -21,6 +21,12 @@ angular.module('backtesterclientApp')
             $scope.deleteJob = function (jobName) {
                 JobsService.deleteJob(jobName);
             };
+
+            $scope.cloneJob = function (jobName) {
+                console.log('Cloning '+ jobName);
+
+                JobsService.cloneJob(jobName);
+            };
         }]
     };
 });

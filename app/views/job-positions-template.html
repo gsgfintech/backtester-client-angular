@@ -2,20 +2,6 @@
     <div class="panel-heading">
         <h4>Positions {{backtestJobDay}} <small>{{backtestJobName}}</small></h4>
     </div>
-    <div class="table-responsive" ng-show="backtestJobPositions[backtestJobPositions.length - 1]">
-        <table class="table">
-            <tr>
-                <th>Cross</th>
-                <th>Quantity</th>
-                <th>PnL (USD)</th>
-            </tr>
-            <tr ng-repeat="position in backtestJobPositions[backtestJobPositions.length - 1] | orderBy:'Cross'">
-                <td>{{position.Cross}}</td>
-                <td ng-class="[{'bg-success': position.PositionQuantity > 0}, {'bg-danger': position.PositionQuantity < 0}]">{{position.PositionQuantity / 1000 | number}}<span ng-show="position.PositionQuantity !== 0">K</span></td>
-                <td ng-class="[{'bg-success': position.RealizedPnlUsd > 0}, {'bg-danger': position.RealizedPnlUsd < 0}]">{{position.RealizedPnlUsd | number:2}}</td>
-            </tr>
-        </table>
-    </div>
     <div class="panel-body" ng-hide="backtestJobPositions[backtestJobPositions.length - 1]">
         <p>No position for this job</p>
     </div>
@@ -31,12 +17,16 @@
                 <tr>
                     <th>Timestamp (HKT)</th>
                     <th>Position</th>
-                    <th>Cumulative PnL (USD)</th>
+                    <th>Gross Cumulative PnL (USD)</th>
+                    <th>Cumulative Commission (USD)</th>
+                    <th>Net Cumulative PnL (USD)</th>
                 </tr>
                 <tr ng-repeat="point in value | orderBy:'timestamp'">
                     <td>{{point.timestamp | date:'dd/MM/yyyy HH:mm:ss'}}</td>
                     <td>{{point.quantity / 1000 | number:0}}K</td>
                     <td>{{point.cumulativePnl | number:0}}</td>
+                    <td>{{point.cumulativeCommission | number:2}}</td>
+                    <td>{{point.cumulativePnl - point.cumulativeCommission | number:0}}</td>
                 </tr>
             </table>
         </div>

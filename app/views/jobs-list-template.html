@@ -9,6 +9,7 @@
                 <th>Created (HKT)</th>
                 <th>Status</th>
                 <th>Start Time (HKT)</th>
+                <th>End Time (HKT)</th>
                 <th>Worker</th>
                 <th></th>
             </tr>
@@ -20,11 +21,17 @@
                 <td>{{job.CreateTime | date:'dd/MM/yy HH:mm:ss'}}</td>
                 <td>{{job.Status}}</td>
                 <td>{{job.ActualStartTime | date:'dd/MM/yy HH:mm:ss'}}</td>
+                <td>{{job.CompletionTime | date:'dd/MM/yy HH:mm:ss'}}</td>
                 <td><a href ng-click="showWorkerDetails(job.Worker)">{{job.Worker}}</a></td>
                 <td>
-                    <button class="btn btn-danger btn-xs" ng-click="deleteJob(job.Name)">
-                        <span class="glyphicon glyphicon-remove-sign"></span>
-                    </button>
+                    <div class="btn-group btn-group-sm">
+                        <button class="btn btn-primary" ng-click="cloneJob(job.Name)">
+                            <span class="glyphicon glyphicon-plus"></span>
+                        </button>
+                        <button class="btn btn-danger" ng-click="deleteJob(job.Name)">
+                            <span class="glyphicon glyphicon-trash"></span>
+                        </button>
+                    </div>
                 </td>
             </tr>
         </table>

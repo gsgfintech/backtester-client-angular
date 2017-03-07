@@ -88,9 +88,9 @@
             <tr>
                 <th colspan="2">Parameters</th>
             </tr>
-            <tr ng-repeat="(key, value) in backtestJob.Strategy.Parameters">
-                <th>{{formatParamName(key)}}</th>
-                <td>{{value}}</td>
+            <tr ng-repeat="parameter in backtestJob.Strategy.Parameters">
+                <th>{{formatParamName(parameter.Name)}}</th>
+                <td>{{parameter.Value}}</td>
             </tr>
         </table>
     </div>

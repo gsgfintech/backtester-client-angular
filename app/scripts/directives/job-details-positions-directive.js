@@ -19,12 +19,14 @@ angular.module('backtesterclientApp')
                     $scope.positionsByCross[$scope.backtestJobPositions[i].Cross].push({
                         quantity: $scope.backtestJobPositions[i].PositionQuantity,
                         cumulativePnl: $scope.backtestJobPositions[i].RealizedPnlUsd,
+                        cumulativeCommission: $scope.backtestJobPositions[i].CommissionUsd,
                         timestamp: $scope.backtestJobPositions[i].LastUpdate
                     });
                 } else {
                     $scope.positionsByCross[$scope.backtestJobPositions[i].Cross] = [{
                         quantity: $scope.backtestJobPositions[i].PositionQuantity,
                         cumulativePnl: $scope.backtestJobPositions[i].RealizedPnlUsd,
+                        cumulativeCommission: $scope.backtestJobPositions[i].CommissionUsd,
                         timestamp: $scope.backtestJobPositions[i].LastUpdate
                     }];
                 }
