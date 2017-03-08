@@ -9,7 +9,7 @@ angular.module('backtesterclientApp')
             backtestJobUnrealizedPnls: '=pnls'
         },
         templateUrl: 'views/job-unrealized-pnls-template.html',
-        controller: ['$scope', function ($scope) {
+        controller: [function () {
         }]
     };
 }]);

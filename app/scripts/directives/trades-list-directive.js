@@ -9,7 +9,10 @@ angular.module('backtesterclientApp')
             tradesList: '=trades',
             header: '@'
         },
-        controller: ['$scope', function ($scope) {
+        controller: ['$scope', 'CommonsService', function ($scope, CommonsService) {
+            $scope.formatRate = function (cross, rate) {
+                return CommonsService.formatRate(cross, rate);
+            };
         }]
     };
 });

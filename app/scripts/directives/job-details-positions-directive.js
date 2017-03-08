@@ -10,7 +10,7 @@ angular.module('backtesterclientApp')
             backtestJobPositions: '=positions'
         },
         templateUrl: 'views/job-positions-template.html',
-        controller: ['$scope', '$rootScope', function ($scope, $rootScope) {
+        controller: ['$scope', function ($scope) {
             $scope.positionsByCross = {};
             $scope.posChartData = [];
 
@@ -30,10 +30,6 @@ angular.module('backtesterclientApp')
                         timestamp: $scope.backtestJobPositions[i].LastUpdate
                     }];
                 }
-            }
-
-            function calculatePosChartData() {
-
             }
         }]
     };

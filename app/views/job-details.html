@@ -1,5 +1,5 @@
 <div class="row">
-    <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
+    <div class="col-lg-10 col-md-10 col-sm-12 col-xs-12">
         <uib-tabset active="jobDetailsCtrl.activeTabIndex">
             <uib-tab heading="Info" select="jobDetailsCtrl.updateLocation('info')">
                 <job-details job="jobDetailsCtrl.job"></job-details>
@@ -43,11 +43,11 @@
             </uib-tab>
         </uib-tabset>
     </div>
-    <div class="col-lg-3 col-md-3 hidden-sm hidden-xs">
+    <div class="col-lg-2 col-md-2 hidden-sm hidden-xs">
         <div class="panel panel-default">
             <div class="panel-heading">Pending Jobs</div>
             <div class="panel-body">
-                <ul class="list-group">
+                <ul class="list-group list-group-xs">
                     <li class="list-group-item text-overflow" ng-repeat="job in jobDetailsCtrl.activeJobs | filter:{Status:'CREATED'}">
                         <a href="#/jobs/{{job.Name}}/info" ng-hide="job.Name === jobDetailsCtrl.jobName">{{job.Name}}</a>
                         <strong ng-show="job.Name === jobDetailsCtrl.jobName">{{job.Name}}</strong>
@@ -59,7 +59,7 @@
         <div class="panel panel-default">
             <div class="panel-heading">Jobs In Progress</div>
             <div class="panel-body">
-                <ul class="list-group">
+                <ul class="list-group list-group-xs">
                     <li class="list-group-item text-overflow" ng-repeat="job in jobDetailsCtrl.activeJobs | filter:{Status:'INPROGRESS'}">
                         <a href="#/jobs/{{job.Name}}/info" ng-hide="job.Name === jobDetailsCtrl.jobName">{{job.Name}}</a>
                         <strong ng-show="job.Name === jobDetailsCtrl.jobName">{{job.Name}}</strong>
@@ -71,7 +71,7 @@
         <div class="panel panel-default">
             <div class="panel-heading">Jobs Completed</div>
             <div class="panel-body">
-                <ul class="list-group">
+                <ul class="list-group list-group-xs">
                     <li class="list-group-item text-overflow" ng-repeat="job in jobDetailsCtrl.inactiveJobs | filter:{Status:'COMPLETED'}">
                         <a href="#/jobs/{{job.Name}}/info" ng-hide="job.Name === jobDetailsCtrl.jobName">{{job.Name}}</a>
                         <strong ng-show="job.Name === jobDetailsCtrl.jobName">{{job.Name}}</strong>

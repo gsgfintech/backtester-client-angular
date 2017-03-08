@@ -64,3 +64,7 @@ body {
     width: 100%;
     padding: 0;
 }
+
+.list-group-xs {
+    font-size: 9px;
+}

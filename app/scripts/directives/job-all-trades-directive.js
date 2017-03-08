@@ -9,7 +9,7 @@ angular.module('backtesterclientApp')
             backtestJobAllTrades: '=trades'
         },
         templateUrl: 'views/job-all-trades-template.html',
-        controller: ['$scope', function ($scope) {
+        controller: [function () {
         }]
     };
 }]);
